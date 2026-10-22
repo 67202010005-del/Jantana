@@ -1,0 +1,1544 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>บัญชีวิสาหกิจชุมชน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Sarabun:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column on phones, widening to a 1000px work area; big touch tiles for the main menu, scrollable ledger tables. */
+:root{
+  --bg:#f3f6f1; --surface:#ffffff; --surface2:#e8eee6; --fg:#18271f; --muted:#56655b; --line:#d3dccf;
+  --accent:#1c6b56; --accent-fg:#ffffff; --accent-soft:#dcebe4;
+  --in:#25774a; --in-bg:#dff0e4; --out:#b3402a; --out-bg:#f7e3dd; --gen:#33598f; --gen-bg:#e0e9f5;
+  --warn:#8f5d00; --warn-bg:#fbf0d2; --bad:#b3261e;
+  --display:'Mitr','Sarabun',sans-serif; --body:'Sarabun','Noto Sans Thai',sans-serif;
+  --shadow:0 1px 2px rgba(20,40,30,.08),0 4px 14px rgba(20,40,30,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1713; --surface:#17221c; --surface2:#1f2d26; --fg:#e5eee8; --muted:#9db1a4; --line:#2c3d34;
+  --accent:#5cc3a2; --accent-fg:#06261b; --accent-soft:#1c3a30;
+  --in:#74d394; --in-bg:#1b3526; --out:#f19078; --out-bg:#3b201a; --gen:#92b3f0; --gen-bg:#1d2a43;
+  --warn:#f0c15a; --warn-bg:#3a2f12; --bad:#ff8f86; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1713; --surface:#17221c; --surface2:#1f2d26; --fg:#e5eee8; --muted:#9db1a4; --line:#2c3d34;
+  --accent:#5cc3a2; --accent-fg:#06261b; --accent-soft:#1c3a30;
+  --in:#74d394; --in-bg:#1b3526; --out:#f19078; --out-bg:#3b201a; --gen:#92b3f0; --gen-bg:#1d2a43;
+  --warn:#f0c15a; --warn-bg:#3a2f12; --bad:#ff8f86; --shadow:none; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);padding-inline:16px;padding-block:0 96px;-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;text-wrap:balance;line-height:1.3}
+h2{font-size:1.3rem} h3{font-size:1.05rem}
+.wrap{max-width:1000px;margin:0 auto}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+.top-in{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.top .ttl{flex:1;min-width:0;font-family:var(--display);font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl small{display:block;font-family:var(--body);font-size:.78rem;color:var(--muted)}
+.iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:10px;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;flex:none}
+.iconbtn:hover{border-color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.yearsel{width:auto!important;flex:none;border:1px solid var(--line);background:var(--surface);border-radius:10px;height:44px;padding:0 10px;font-weight:600}
+main{padding-block:18px;display:flex;flex-direction:column;gap:18px}
+.sub{color:var(--muted);margin:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.grid.big{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.tile{display:flex;gap:14px;align-items:center;text-align:left;width:100%;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 16px;cursor:pointer;min-height:68px;box-shadow:var(--shadow)}
+.tile:hover{border-color:var(--accent)}
+.tile .tt{font-weight:600;line-height:1.3}
+.tile .hh{font-size:.88rem;color:var(--muted);line-height:1.35;margin-top:2px}
+.tile .ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.tile.in .ic{background:var(--in-bg);color:var(--in)} .tile.out .ic{background:var(--out-bg);color:var(--out)} .tile.gen .ic{background:var(--gen-bg);color:var(--gen)}
+.hero{display:flex;flex-direction:column;gap:14px;align-items:stretch}
+.hero .tile{padding:20px 18px;min-height:96px}
+.hero .tile .tt{font-family:var(--display);font-size:1.5rem;font-weight:500}
+.hero .tile .ic{width:60px;height:60px;border-radius:16px}
+.hero .tile.in{border-left:6px solid var(--in)} .hero .tile.out{border-left:6px solid var(--out)} .hero .tile.gen{border-left:6px solid var(--gen)}
+@media(min-width:760px){.hero{flex-direction:row}.hero .tile{flex:1;flex-direction:column;align-items:flex-start;min-height:190px;justify-content:center}}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);border-radius:12px;padding:12px 18px;min-height:48px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:var(--surface);color:var(--fg);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--accent)}
+.btn.danger{background:var(--surface);color:var(--bad);border-color:var(--bad)}
+.btn.sm{min-height:38px;padding:6px 12px;font-size:.9rem}
+.btn.block{width:100%}
+.btn.in{background:var(--in);border-color:var(--in);color:var(--surface)} .btn.out{background:var(--out);border-color:var(--out);color:var(--surface)} .btn.gen{background:var(--gen);border-color:var(--gen);color:var(--surface)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label,.lbl{font-weight:600;font-size:.95rem}
+.field .hint{font-size:.85rem;color:var(--muted)}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;min-height:46px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:0}
+input.amount{font-size:1.5rem;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.form{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:760px){.form.two{grid-template-columns:1fr 1fr}.form .full{grid-column:1/-1}}
+.err{color:var(--bad);font-weight:600;font-size:.92rem}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.82rem;font-weight:600;background:var(--accent-soft);color:var(--accent)}
+.pill.in{background:var(--in-bg);color:var(--in)} .pill.out{background:var(--out-bg);color:var(--out)} .pill.gen{background:var(--gen-bg);color:var(--gen)} .pill.warn{background:var(--warn-bg);color:var(--warn)}
+.banner{border-radius:12px;padding:12px 14px;background:var(--warn-bg);color:var(--warn);font-weight:500;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.banner.ok{background:var(--in-bg);color:var(--in)}
+.kpis{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi .k{font-size:.85rem;color:var(--muted)}
+.kpi .v{font-family:var(--display);font-size:1.3rem;font-variant-numeric:tabular-nums}
+.kpi .v.neg{color:var(--out)}
+.sect{display:flex;flex-direction:column;gap:10px}
+.sect>h3{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.92rem;font-weight:500;letter-spacing:.02em}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:500;min-height:40px}
+.tab[aria-pressed=true]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.scroll{overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-x pan-y;border:1px solid var(--line);border-radius:12px;background:var(--surface);max-width:100%;max-height:62vh}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--surface2);font-weight:600;font-size:.85rem;white-space:nowrap;text-align:center}
+td.n,th.n{text-align:right;white-space:nowrap}
+td.d{white-space:nowrap}
+table:not(.stm) td:nth-child(2){min-width:170px}
+tr.tot td{font-weight:700;background:var(--surface2)}
+tr.clk{cursor:pointer} tr.clk:hover td{background:var(--accent-soft)}
+td.mt{text-align:center;color:var(--muted)}
+.stm td{border-bottom:1px dashed var(--line)}
+.stm tr.head td{font-weight:700;background:var(--surface2)}
+.stm tr.sub td:first-child{padding-left:28px}
+.stm tr.tot td{font-weight:700;background:transparent;border-top:1px solid var(--fg)}
+.stm tr.grand td{font-weight:700;background:var(--accent-soft);border-top:2px solid var(--accent);border-bottom:2px solid var(--accent)}
+.neg{color:var(--out)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:12px;z-index:50;max-width:calc(100vw - 32px);font-weight:500}
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--bg);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.savebar>div{max-width:1000px;margin:0 auto;display:flex;gap:10px}
+.post{display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;font-size:.95rem}
+.post .dr{color:var(--in)} .post .cr{color:var(--out)}
+.crumb{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.hint{font-size:.88rem;color:var(--muted)}
+.empty{text-align:center;padding:28px 12px;color:var(--muted)}
+.lrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface2)}
+.lrow .full{grid-column:1/-1}
+.lrow input,.lrow select{background:var(--surface)}
+details>summary{cursor:pointer;font-weight:600;padding:6px 0}
+.mono{font-variant-numeric:tabular-nums}
+.recent-history .scroll{max-height:42vh;min-height:150px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.share-row{background:var(--surface)}
+.chart-grid{display:grid;grid-template-columns:repeat(12,minmax(54px,1fr));gap:8px;align-items:end;overflow-x:auto;padding:10px 2px 4px}
+.chart-month{min-width:54px;text-align:center;font-size:.78rem;color:var(--muted)}
+.chart-bars{height:180px;display:flex;align-items:flex-end;justify-content:center;gap:4px;border-bottom:1px solid var(--line);padding:0 4px}
+.chart-bar{width:14px;min-height:2px;border-radius:4px 4px 0 0;background:var(--in)}.chart-bar.exp{background:var(--out)}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;margin:8px 0}.chart-legend span{display:inline-flex;align-items:center;gap:6px}.chart-dot{width:11px;height:11px;border-radius:3px;display:inline-block;background:var(--in)}.chart-dot.exp{background:var(--out)}
+.print-actions{display:flex;justify-content:flex-end;gap:8px;margin:8px 0 12px}
+@media print{body{background:#fff!important;color:#000!important}.top,.savebar,button,.tabs,.yearsel,.print-actions{display:none!important}.wrap,main.wrap{max-width:none!important;padding:0!important;margin:0!important}.scroll{overflow:visible!important;max-height:none!important;border:0!important}table{width:100%!important;font-size:10pt!important}.card,.banner{box-shadow:none!important;break-inside:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<div id="app"></div>
+<script>
+/* ============ ข้อมูลและแกนบัญชี ============ */
+const LS='cc_books_v1';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const r2=x=>Math.round((+x||0)*100)/100;
+const fmt=(n,z)=>{n=+n||0;if(Math.abs(n)<0.005)return z===undefined?'-':z;return n.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})};
+const fq=n=>{n=+n||0;return n.toLocaleString('th-TH',{maximumFractionDigits:3})};
+const MS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const dshort=d=>{if(!d)return'';const[y,m,dd]=d.split('-');return (+dd)+' '+MS[+m-1]+' '+String((+y+543)%100).padStart(2,'0')};
+const dfull=d=>{if(!d)return'';const[y,m,dd]=d.split('-');return (+dd)+' '+MF[+m-1]+' '+(+y+543)};
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const thisYear=()=>new Date().getFullYear();
+const pad=n=>String(n).padStart(2,'0');
+const lastDay=(y,m)=>new Date(y,m,0).getDate();
+
+function blank(){return{v:1,setup:false,seq:1,auth:{password:''},org:{name:'',kind:'',address:'',phone:'',regno:'',president:'',bookkeeper:'',startYear:thisYear(),demo:false},parties:[],items:[],tx:[],closing:{},ui:{year:thisYear(),lastDate:''}}}
+let S=blank();
+let mem=null;
+let unlocked=false;
+function load(){try{const j=localStorage.getItem(LS);if(j){const o=JSON.parse(j);if(o&&o.v===1){S=Object.assign(blank(),o);S.auth=Object.assign({password:''},o.auth||{});}}}catch(e){}
+  if(!S.ui)S.ui={year:thisYear(),lastDate:''};migrate();}
+function migrate(){for(const t of S.tx){if(t.cat==='prod_exp'&&t.sub==='transport'){t.cat='freight_in';delete t.sub}}}
+let saveT=null;
+function persist(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){mem=JSON.stringify(S)}},150)}
+let _E=null,_M=null;
+function commit(){_E=null;_M=null;persist()}
+const uid=()=>'i'+(S.seq++).toString(36);
+
+/* ---------- ผังบัญชี ---------- */
+const ACC={
+ '1100':{n:'เงินสด',t:'A',s:'dr'},'1200':{n:'เงินฝากธนาคาร',t:'A',s:'dr'},'1300':{n:'ลูกหนี้',t:'A',s:'dr'},
+ '1400':{n:'สินค้าคงเหลือ',t:'A',s:'dr'},'1500':{n:'วัตถุดิบคงเหลือ',t:'A',s:'dr'},'1600':{n:'สินทรัพย์ถาวร (ราคาทุน)',t:'A',s:'dr'},
+ '1650':{n:'ค่าเสื่อมราคาสะสม',t:'A',s:'cr'},
+ '2100':{n:'เจ้าหนี้การค้า',t:'L',s:'cr'},'2200':{n:'เจ้าหนี้เงินกู้',t:'L',s:'cr'},'2300':{n:'เจ้าหนี้เงินรับฝาก',t:'L',s:'cr'},'2400':{n:'เจ้าหนี้อื่นๆ',t:'L',s:'cr'},
+ '3100':{n:'ทุน - ค่าหุ้น',t:'E',s:'cr'},'3200':{n:'ทุนสะสม / กำไรสะสมยกมา',t:'E',s:'cr'},
+ '4100':{n:'รายได้ - ขายสินค้า',t:'R',s:'cr'},'4200':{n:'รายได้ - ดอกเบี้ยรับ',t:'R',s:'cr'},'4300':{n:'รายได้ - ค่าบริการ',t:'R',s:'cr'},
+ '4400':{n:'รายได้อื่น',t:'R',s:'cr'},'4500':{n:'ดอกเบี้ยรับเงินฝากธนาคาร',t:'R',s:'cr'},
+ '5100':{n:'ซื้อวัตถุดิบ',t:'X',s:'dr'},'5110':{n:'ค่าขนส่งซื้อวัตถุดิบ (ขนส่งขาเข้า)',t:'X',s:'dr'},'5120':{n:'ค่าใช้จ่ายในการผลิต',t:'X',s:'dr'},'5130':{n:'วัตถุดิบคงเหลือต้นงวด',t:'X',s:'dr'},'5140':{n:'วัตถุดิบคงเหลือปลายงวด',t:'X',s:'cr'},
+ '5200':{n:'ซื้อสินค้า',t:'X',s:'dr'},'5210':{n:'ค่าใช้จ่ายในการซื้อ',t:'X',s:'dr'},'5220':{n:'สินค้าคงเหลือต้นงวด',t:'X',s:'dr'},'5230':{n:'สินค้าคงเหลือปลายงวด',t:'X',s:'cr'},
+ '5300':{n:'ดอกเบี้ยจ่าย',t:'X',s:'dr'},'5310':{n:'ต้นทุนบริการอื่นๆ (ค่าแรงงาน ค่าน้ำมัน)',t:'X',s:'dr'},
+ '5400':{n:'ค่าใช้จ่ายในการดำเนินงาน',t:'X',s:'dr'},'5410':{n:'ค่าเสื่อมราคา',t:'X',s:'dr'},'5420':{n:'ขาดทุนจากการจำหน่ายสินทรัพย์',t:'X',s:'dr'}
+};
+const ACCS=Object.keys(ACC);
+const isBS=a=>'ALE'.includes(ACC[a].t);
+const CTYPES=[['2100','เจ้าหนี้การค้า (ค้างจ่ายค่าสินค้า/วัตถุดิบ)'],['2200','เงินกู้ยืม'],['2300','เงินรับฝาก'],['2400','อื่นๆ']];
+const SUBS=[['other','ค่าใช้จ่ายอื่นในการผลิต (น้ำ ไฟ แก๊ส ภาชนะ)'],['labor','ค่าแรงงาน']];
+
+/* ---------- ประเภทรายการ ---------- */
+const CD={
+ sale:{k:'in',t:'ขายสินค้า',h:'ขายสินค้าแล้วได้รับเงินทันที',f:['date','item:goods','qty','price','amount','desc']},
+ interest:{k:'in',t:'ดอกเบี้ยรับ',h:'ดอกเบี้ยจากการให้กู้ หรือดอกเบี้ยเงินฝากที่ธนาคารจ่ายให้',f:['date','amount','desc']},
+ service:{k:'in',t:'ค่าบริการ',h:'รายได้จากการให้บริการ เช่น รับจ้าง ให้เช่า',f:['date','amount','desc']},
+ inc_other:{k:'in',t:'รายได้อื่นๆ',h:'รายได้อื่นที่ไม่ใช่การขายหรือบริการ',f:['date','amount','desc!']},
+ share:{k:'in',t:'รับค่าหุ้น',h:'สมาชิกซื้อหุ้นหรือนำเงินมาลงหุ้น',f:['date','amount','party:member']},
+ collect_debtor:{k:'in',t:'รับชำระหนี้จากลูกหนี้',h:'ลูกหนี้นำเงินมาคืน',f:['date','amount','party:debtor','desc']},
+ loan_in:{k:'in',t:'รับเงินกู้ยืม / เงินรับฝาก',h:'กู้เงินมาใช้ หรือรับฝากเงินจากสมาชิก',f:['date','amount','party:creditor','ctype','desc']},
+ grant:{k:'in',t:'เงินอุดหนุน / เงินบริจาค',h:'ได้รับเงินช่วยเหลือจากหน่วยงานหรือผู้ใจบุญ',f:['date','amount','desc']},
+ buy_raw:{k:'out',t:'ซื้อวัตถุดิบ',h:'ซื้อของมาผลิต เช่น ผลไม้ แป้ง น้ำตาล (1 บิลใส่ได้หลายรายการ)',f:['date','lines:material','amount:รวมเงินทั้งบิล (บาท)','desc']},
+ freight_in:{k:'out',t:'ค่าขนส่งซื้อวัตถุดิบ (ขนส่งขาเข้า)',h:'ค่าขนส่ง ค่าบรรทุก ค่าแรงยกของ ของวัตถุดิบที่ซื้อมา นับเป็นต้นทุนการผลิต',f:['date','amount','desc']},
+ prod_exp:{k:'out',t:'ค่าใช้จ่ายในการผลิต',h:'บันทึกค่าใช้จ่ายได้หลายรายการในครั้งเดียว และเลือกภาชนะที่ซื้อเพื่อเพิ่มเข้าสต๊อกได้',f:['date','sub','lines:material','amount:รวมค่าใช้จ่ายทั้งบิล (บาท)']},
+ buy_goods:{k:'out',t:'ซื้อสินค้า',h:'ซื้อสินค้าสำเร็จรูปมาขายต่อ',f:['date','item:goods','qty','price','amount','desc']},
+ buy_exp:{k:'out',t:'ค่าใช้จ่ายในการซื้อ',h:'ค่าขนส่ง ค่าบรรทุกของที่ซื้อมาขาย',f:['date','amount','desc']},
+ int_exp:{k:'out',t:'ดอกเบี้ยจ่าย',h:'จ่ายดอกเบี้ยเงินกู้หรือเงินรับฝาก',f:['date','amount','party:creditor?','desc']},
+ svc_other:{k:'out',t:'ต้นทุนบริการอื่นๆ',h:'ค่าแรงงาน ค่าน้ำมัน ของงานบริการ',f:['date','amount','desc']},
+ share_ret:{k:'out',t:'จ่ายคืนค่าหุ้น',h:'คืนเงินค่าหุ้นให้สมาชิก',f:['date','amount','party:member']},
+ opex:{k:'out',t:'ค่าใช้จ่ายในการดำเนินงาน',h:'ค่าเช่า ค่าน้ำค่าไฟสำนักงาน ค่าโทรศัพท์ ค่าธรรมเนียมธนาคาร',f:['date','amount','desc!']},
+ pay_creditor:{k:'out',t:'ชำระหนี้เจ้าหนี้',h:'จ่ายเงินคืนที่เคยกู้หรือค้างจ่าย',f:['date','amount','party:creditor','ctype','desc']},
+ lend:{k:'out',t:'ให้ลูกหนี้ยืมเงิน',h:'ให้สมาชิกหรือบุคคลอื่นกู้ยืม',f:['date','amount','party:debtor','desc']},
+ buy_asset:{k:'out',t:'ซื้อสินทรัพย์ถาวร',h:'ซื้อเครื่องมือ เครื่องจักร อาคาร ที่ใช้นานเกิน 1 ปี',f:['date','desc!:ชื่อสินทรัพย์','pcs','price:ราคาต่อชิ้น (บาท)','amount:ราคาทุนรวมทุกชิ้น (บาท)','life','salvage']},
+ dispose_asset:{k:'in',t:'จำหน่ายสินทรัพย์ถาวร',h:'ขาย ทิ้ง หรือเลิกใช้สินทรัพย์ ระบบตัดออกจากบัญชีและคิดกำไร/ขาดทุนให้',f:['date','asset','recv','amount0:เงินที่ได้รับ (บาท) ถ้าไม่ได้เงินใส่ 0','desc']},
+ other_exp:{k:'out',t:'จ่ายอื่นๆ',h:'รายจ่ายอื่นที่ไม่เข้าหมวดข้างต้น',f:['date','amount','desc!']},
+ dep:{k:'xfer',t:'นำเงินสดฝากธนาคาร',h:'นำเงินสดไปฝากเข้าบัญชี',f:['date','amount','desc']},
+ wd:{k:'xfer',t:'ถอนเงินจากธนาคาร',h:'ถอนเงินจากบัญชีมาเป็นเงินสด',f:['date','amount','desc']},
+ credit_sale:{k:'gen',t:'ขายเชื่อ',h:'ขายสินค้าแต่ยังไม่ได้รับเงิน (ลูกหนี้)',f:['date','party:debtor','item:goods','qty','price','amount','desc']},
+ credit_buy_goods:{k:'gen',t:'ซื้อสินค้าเชื่อ',h:'ซื้อสินค้ามาขายแต่ยังไม่จ่ายเงิน (เจ้าหนี้)',f:['date','party:creditor','item:goods','qty','price','amount','desc']},
+ credit_buy_raw:{k:'gen',t:'ซื้อวัตถุดิบเชื่อ',h:'ซื้อวัตถุดิบแต่ยังไม่จ่ายเงิน (เจ้าหนี้)',f:['date','party:creditor','lines:material','amount:รวมเงินทั้งบิล (บาท)','desc']},
+ stock_in:{k:'gen',t:'รับสินค้าที่ผลิตเสร็จเข้าทะเบียน',h:'ผลิตสินค้าได้แล้ว ลงจำนวนในทะเบียนคุมสินค้า',f:['date','range','item:goods!','qty!','amount!:ต้นทุนรวมของที่ผลิตได้ (บาท)','desc']},
+ stock_out:{k:'gen',t:'เบิกวัตถุดิบไปผลิต',h:'นำวัตถุดิบออกจากคลังไปใช้ (เบิกได้หลายรายการในครั้งเดียว) ลงทะเบียนคุมวัตถุดิบ',f:['date','linesq:material','desc']},
+ journal:{k:'gen',t:'บันทึกบัญชีอื่นๆ (ปรับปรุงรายการ)',h:'สำหรับผู้ที่รู้จักเดบิต/เครดิต เช่น ตัดหนี้สูญ',f:['date','amount','dr','cr','desc!']},
+ open_cash:{k:'open',t:'เงินสดยกมา',h:'เงินสดที่มีอยู่ตอนเริ่มทำบัญชี',f:['date','amount','desc']},
+ open_bank:{k:'open',t:'เงินฝากธนาคารยกมา',h:'ยอดเงินในสมุดบัญชีธนาคารตอนเริ่มทำบัญชี',f:['date','amount','desc']},
+ open_debtor:{k:'open',t:'ลูกหนี้ยกมา',h:'คนที่ยังค้างเงินกลุ่มอยู่',f:['date','amount','party:debtor','desc']},
+ open_creditor:{k:'open',t:'เจ้าหนี้ยกมา',h:'เงินที่กลุ่มยังค้างจ่ายหรือกู้มา',f:['date','amount','party:creditor','ctype','desc']},
+ open_goods:{k:'open',t:'สินค้าคงเหลือยกมา',h:'สินค้าที่มีอยู่ตอนเริ่มทำบัญชี',f:['date','item:goods!','qty!','price','amount!:มูลค่า (ราคาทุนรวม)']},
+ open_raw:{k:'open',t:'วัตถุดิบคงเหลือยกมา',h:'วัตถุดิบที่มีอยู่ตอนเริ่มทำบัญชี',f:['date','item:material!','qty!','price','amount!:มูลค่า (ราคาทุนรวม)']},
+ open_asset:{k:'open',t:'สินทรัพย์ถาวรยกมา',h:'เครื่องมือ อาคาร ที่มีอยู่ก่อนเริ่มทำบัญชี',f:['date','desc!:ชื่อสินทรัพย์','pcs','price:ราคาทุนต่อชิ้น (บาท)','amount!:ราคาทุนรวมทุกชิ้น (บาท)','life','salvage','accum']},
+ open_share:{k:'open',t:'ค่าหุ้นสมาชิกยกมา',h:'เงินค่าหุ้นที่สมาชิกมีอยู่แล้ว',f:['date','amount','party:member']}
+};
+const OTHER_IN=['collect_debtor','loan_in','grant','dispose_asset'];
+const OTHER_OUT=['pay_creditor','lend','buy_asset','other_exp'];
+const OPENS=['open_cash','open_bank','open_debtor','open_creditor','open_goods','open_raw','open_asset','open_share'];
+const isOpenCat=c=>c.startsWith('open_');
+const pname=id=>{const p=S.parties.find(x=>x.id===id);return p?p.name:''};
+const iget=id=>S.items.find(x=>x.id===id);
+
+function txLines(t){
+  const a=t.acct==='bank'?'1200':'1100',P=t.partyId||null,m=r2(t.amount);
+  const D=(acc,p)=>({acc,dr:m,cr:0,party:p||null}),C=(acc,p)=>({acc,dr:0,cr:m,party:p||null});
+  switch(t.cat){
+   case'sale':return[D(a),C('4100')];
+   case'interest':return[D(a),C(t.acct==='bank'?'4500':'4200')];
+   case'service':return[D(a),C('4300')];
+   case'inc_other':case'grant':return[D(a),C('4400')];
+   case'share':return[D(a),C('3100',P)];
+   case'collect_debtor':return[D(a),C('1300',P)];
+   case'loan_in':return[D(a),C(t.ctype||'2200',P)];
+   case'dep':return[D('1200'),C('1100')];
+   case'wd':return[D('1100'),C('1200')];
+   case'buy_raw':return[D('5100'),C(a)];
+   case'prod_exp':return[D('5120'),C(a)];
+   case'buy_goods':return[D('5200'),C(a)];
+   case'buy_exp':return[D('5210'),C(a)];
+   case'freight_in':return[D('5110'),C(a)];
+   case'int_exp':return[D('5300',P),C(a)];
+   case'svc_other':return[D('5310'),C(a)];
+   case'share_ret':return[D('3100',P),C(a)];
+   case'opex':case'other_exp':return[D('5400'),C(a)];
+   case'pay_creditor':return[D(t.ctype||'2100',P),C(a)];
+   case'lend':return[D('1300',P),C(a)];
+   case'buy_asset':return[D('1600'),C(a)];
+   case'credit_sale':return[D('1300',P),C('4100')];
+   case'credit_buy_goods':return[D('5200'),C('2100',P)];
+   case'credit_buy_raw':return[D('5100'),C('2100',P)];
+   case'open_cash':return[D('1100'),C('3200')];
+   case'open_bank':return[D('1200'),C('3200')];
+   case'open_debtor':return[D('1300',P),C('3200')];
+   case'open_creditor':return[D('3200'),C(t.ctype||'2100',P)];
+   case'open_goods':return[D('1400'),C('3200')];
+   case'open_raw':return[D('1500'),C('3200')];
+   case'open_share':return[D('3200'),C('3100',P)];
+   case'open_asset':{const ac=r2(t.accum||0),L=[D('1600')];if(ac>0)L.push({acc:'1650',dr:0,cr:ac,party:null});L.push({acc:'3200',dr:0,cr:r2(m-ac),party:null});return L}
+   case'dispose_asset':{
+    const as=assetList().find(x=>x.id===t.assetId);if(!as)return[];
+    const c=disposeCalcFor(as,t.date,m),L=[];
+    if(m>0)L.push({acc:a,dr:m,cr:0,party:null});
+    if(c.prior>0)L.push({acc:'1650',dr:c.prior,cr:0,party:null});
+    if(c.fin>0)L.push({acc:'5410',dr:c.fin,cr:0,party:null});
+    if(c.loss>0)L.push({acc:'5420',dr:c.loss,cr:0,party:null});
+    L.push({acc:'1600',dr:0,cr:as.cost,party:null});
+    if(c.gain>0)L.push({acc:'4400',dr:0,cr:c.gain,party:null});
+    return L}
+   case'journal':return t.dr&&t.cr?[D(t.dr),C(t.cr)]:[];
+  }
+  return[];
+}
+function moves(t){
+  if(t.lines)return t.lines.filter(l=>l.itemId&&+l.qty>0).map(l=>({itemId:l.itemId,qty:+l.qty,amount:r2(l.amount||0)}));
+  return t.itemId&&+t.qty>0?[{itemId:t.itemId,qty:+t.qty,amount:r2(t.amount||0)}]:[];
+}
+function txDesc(t,onlyIdx){
+  let s=t.desc||CD[t.cat].t;
+  if(t.partyId&&!t.desc)s+=' - '+pname(t.partyId);
+  else if(t.partyId)s+=' ('+pname(t.partyId)+')';
+  if(t.cat==='dispose_asset'&&!t.desc){const as=S.tx.find(x=>x.id===t.assetId);if(as)s+=' - '+(as.desc||'สินทรัพย์')}
+  const parts=moves(t).filter((m,i)=>onlyIdx==null||i===onlyIdx).map(m=>{const it=iget(m.itemId);return it?it.name+' '+fq(m.qty)+' '+it.unit:''}).filter(Boolean);
+  if(t.lines&&t.cat==='prod_exp'&&!parts.length){const ds=t.lines.map(l=>l.desc).filter(Boolean);if(ds.length)s+=' ['+ds.join(', ')+']'}
+  if(parts.length)s+=' ['+parts.join(', ')+']';
+  return s;
+}
+const srcOf=t=>t.kind==='in'||t.kind==='out'?t.acct:(t.kind==='xfer'?'xfer':'gen');
+
+/* ---------- สินทรัพย์ถาวรและค่าเสื่อม ---------- */
+function assetList(){
+  const dsp={};S.tx.forEach(t=>{if(t.cat==='dispose_asset'&&t.assetId)dsp[t.assetId]={date:t.date,id:t.id}});
+  return S.tx.filter(t=>t.cat==='buy_asset'||t.cat==='open_asset').map(t=>({id:t.id,name:t.desc||'สินทรัพย์',cost:r2(t.amount),life:+t.life||5,date:t.date,
+    pcs:+t.pcs||1,salvage:r2(t.salvage||0),disp:dsp[t.id]?dsp[t.id].date:null,dispId:dsp[t.id]?dsp[t.id].id:null,
+    acq:t.cat==='open_asset'?(t.acqDate||t.date):t.date,accum:t.cat==='open_asset'?r2(t.accum||0):0,open:t.cat==='open_asset'}));
+}
+/* ค่าเสื่อมราคาเส้นตรง: (ราคาทุน - มูลค่าซาก) / อายุ ปีที่ได้มาและปีที่จำหน่ายคิดตามจำนวนเดือน (นับเดือนที่ได้มา/จำหน่ายเต็มเดือน) */
+function depSchedule(a,lastY){
+  const out=[];let acc=a.accum;const y0=+a.date.slice(0,4),base=r2(a.cost-(a.salvage||0));
+  const dy=a.disp?+a.disp.slice(0,4):null,dm=a.disp?+a.disp.slice(5,7):12;
+  const endY=dy!==null?Math.min(lastY,dy):lastY;
+  for(let y=y0;y<=endY;y++){
+    const m0=(!a.open&&y===y0)?+a.date.slice(5,7):1,m1=(dy!==null&&y===dy)?dm:12,months=Math.max(0,m1-m0+1);
+    const rem=r2(base-acc);if(rem<=0.004)break;
+    const d=Math.min(rem,r2(base/a.life*months/12));if(d<=0)continue;
+    out.push({y,amt:d,disp:dy!==null&&y===dy});acc=r2(acc+d);
+  }
+  return out;
+}
+/* คำนวณตัดบัญชีเมื่อจำหน่ายสินทรัพย์: prior=ค่าเสื่อมสะสมถึงสิ้นปีก่อน, fin=ค่าเสื่อมช่วงปีที่จำหน่าย, bv=มูลค่าตามบัญชี */
+function disposeCalcFor(a,date,proceeds){
+  const dy=+date.slice(0,4),sc=depSchedule(Object.assign({},a,{disp:date}),dy);
+  const prior=r2(a.accum+sc.filter(s=>s.y<dy).reduce((s,x)=>s+x.amt,0)),fin=r2(sc.filter(s=>s.y===dy).reduce((s,x)=>s+x.amt,0));
+  const bv=r2(a.cost-prior-fin),diff=r2((+proceeds||0)-bv);
+  return{prior,fin,bv,gain:diff>0?diff:0,loss:diff<0?-diff:0};
+}
+function maxYear(){let y=Math.max(thisYear(),S.ui.year||0);for(const t of S.tx)y=Math.max(y,+t.date.slice(0,4));return y}
+
+/* ---------- สร้างรายการบัญชีทั้งหมด ---------- */
+const cmp=(a,b)=>a.date<b.date?-1:a.date>b.date?1:a.n-b.n;
+function E(){
+  if(_E)return _E;
+  const out=[];
+  S.tx.forEach((t,i)=>{const lines=txLines(t);if(lines.length)out.push({id:t.id,date:t.date,n:t.n||i,src:srcOf(t),tx:t,desc:txDesc(t),lines,open:isOpenCat(t.cat)})});
+  const ly=maxYear();
+  assetList().forEach(a=>depSchedule(a,ly).filter(d=>!d.disp).forEach(d=>out.push({id:'dep'+a.id+d.y,date:d.y+'-12-31',n:1e9,src:'adj',tx:null,desc:'ค่าเสื่อมราคา '+a.name+' ปี '+(d.y+543),
+    lines:[{acc:'5410',dr:d.amt,cr:0},{acc:'1650',dr:0,cr:d.amt}]})));
+  out.sort(cmp);
+  Object.keys(S.closing).sort().forEach(ys=>{
+    const c=S.closing[ys],y=+ys,st=ys+'-01-01',en=ys+'-12-31';
+    const bal=acc=>{let s=0;for(const e of out)if(e.date<st||(e.open&&e.date<=en))for(const l of e.lines)if(l.acc===acc)s+=l.dr-l.cr;return r2(s)};
+    const add=(open,close,inv,eo,ec,label)=>{
+      if(close===''||close==null||isNaN(+close))return;
+      const ob=bal(inv),cb=r2(+close);
+      if(ob>0)out.push({id:'adj'+ys+eo,date:en,n:1e9+1,src:'adj',tx:null,desc:label+'ต้นงวด ปี '+(y+543),lines:[{acc:eo,dr:ob,cr:0},{acc:inv,dr:0,cr:ob}]});
+      if(cb>0)out.push({id:'adj'+ys+ec,date:en,n:1e9+2,src:'adj',tx:null,desc:label+'ปลายงวด ปี '+(y+543),lines:[{acc:inv,dr:cb,cr:0},{acc:ec,dr:0,cr:cb}]});
+      out.sort(cmp);
+    };
+    add(0,c.goods,'1400','5220','5230','ปรับปรุงสินค้าคงเหลือ');
+    add(0,c.material,'1500','5130','5140','ปรับปรุงวัตถุดิบคงเหลือ');
+  });
+  return _E=out;
+}
+const MIN='0000-00-00';
+const ySt=y=>y+'-01-01',yEn=y=>y+'-12-31';
+const mSt=(y,m)=>m?y+'-'+pad(m)+'-01':ySt(y),mEn=(y,m)=>m?y+'-'+pad(m)+'-'+pad(lastDay(y,m)):yEn(y);
+function sumAcc(acc,from,to){let d=0,c=0;for(const e of E()){if(e.date<from||e.date>to)continue;for(const l of e.lines)if(l.acc===acc){d+=l.dr;c+=l.cr}}return{d:r2(d),c:r2(c)}}
+function nat(acc,from,to){const{d,c}=sumAcc(acc,from,to);return ACC[acc].s==='dr'?r2(d-c):r2(c-d)}
+function priorProfit(y){let s=0;for(const e of E()){if(e.date>=ySt(y))break;for(const l of e.lines){const t=ACC[l.acc].t;if(t==='R'||t==='X')s+=l.cr-l.dr}}return r2(s)}
+/* ยอดยกมาของเงินสด/ธนาคารที่ต้นช่วง (นับยอดยกมาที่ลงในช่วงนั้นด้วย) */
+function carried(acc,st,en){let s=0;for(const e of E()){if(e.date<st||(e.open&&e.date>=st&&e.date<=en))for(const l of e.lines)if(l.acc===acc)s+=l.dr-l.cr}return r2(s)}
+
+/* ---------- สมุดเงินสด / เงินฝาก ---------- */
+const RC=[['sale','ขายสินค้า'],['interest','ดอกเบี้ยรับ'],['service','ค่าบริการ'],['inc_other','รายได้อื่นๆ'],['share','รับค่าหุ้น'],['XF','ถอนเงินฝาก'],['OT','อื่นๆ']];
+const PC=[['buy_raw','ซื้อวัตถุดิบ','ต้นทุนการผลิต'],['freight_in','ขนส่งเข้า','ต้นทุนการผลิต'],['prod_exp','คชจ.ผลิต','ต้นทุนการผลิต'],['buy_goods','ซื้อสินค้า','ต้นทุนขาย'],['buy_exp','คชจ.ซื้อ','ต้นทุนขาย'],['int_exp','ดอกเบี้ยจ่าย','ต้นทุนบริการ'],['svc_other','อื่นๆ','ต้นทุนบริการ'],['share_ret','จ่ายคืนค่าหุ้น'],['XF','นำฝาก'],['opex','คชจ.ดำเนินงาน'],['OT','อื่นๆ']];
+function bookData(acct,y,m){return bookDataR(acct,mSt(y,m),mEn(y,m))}
+function bookDataR(acct,st,en){
+  const ac=acct==='bank'?'1200':'1100';
+  const recv=[],pay=[];
+  for(const e of E()){
+    if(!e.tx||e.open||e.date<st||e.date>en)continue;const t=e.tx;let side=null,col=null;
+    if(t.kind==='xfer'){col='XF';side=(t.cat==='dep')===(acct==='bank')?'in':'out'}
+    else if(t.acct===acct){side=t.kind;col=OTHER_IN.includes(t.cat)||OTHER_OUT.includes(t.cat)?'OT':t.cat}
+    else continue;
+    (side==='in'?recv:pay).push({t,col,amt:r2(t.amount),date:t.date});
+  }
+  const cin=carried(ac,st,en),tr=r2(recv.reduce((s,r)=>s+r.amt,0)),tp=r2(pay.reduce((s,r)=>s+r.amt,0));
+  return{recv,pay,carry:cin,tr,tp,end:r2(cin+tr-tp)};
+}
+
+/* ---------- ทะเบียนคุมสินค้า/วัตถุดิบ ---------- */
+const INC=['buy_goods','buy_raw','credit_buy_goods','credit_buy_raw','stock_in','open_goods','open_raw','prod_exp'];
+const OUTC=['sale','credit_sale','stock_out'];
+function stockCard(itemId,upTo){
+  const mv=[];
+  for(const t of S.tx){
+    if(!(INC.includes(t.cat)||OUTC.includes(t.cat)))continue;
+    if(upTo&&t.date>upTo)continue;
+    moves(t).forEach((m,i)=>{if(m.itemId===itemId)mv.push({t,m,i})});
+  }
+  mv.sort((x,y)=>cmp2(x.t,y.t));
+  let bq=0,ba=0,last=0;const rows=[];
+  for(const {t,m,i} of mv){
+    const q=m.qty,desc=txDesc(t,i);
+    if(INC.includes(t.cat)){const a=m.amount,p=q?a/q:0;bq+=q;ba+=a;last=p;rows.push({t,date:t.date,desc,iq:q,ip:p,ia:a,bq,ba,bp:bq?ba/bq:last})}
+    else{const p=bq>0?ba/bq:last,a=r2(q*p);bq-=q;ba=bq>0?ba-a:0;rows.push({t,date:t.date,desc,oq:q,op:p,oa:a,bq,ba,bp:bq>0?ba/bq:p})}
+  }
+  return{rows,bq,ba};
+}
+function cmp2(a,b){return a.date<b.date?-1:a.date>b.date?1:(a.n||0)-(b.n||0)}
+
+/* ---------- บัญชีย่อย (สมาชิก ลูกหนี้ เจ้าหนี้) ---------- */
+function partyCard(p){
+  const rows=[];let bal=0;
+  for(const e of E()){
+    for(const l of e.lines){
+      if(l.party!==p.id)continue;
+      if(p.type==='member'&&l.acc==='3100'){const inc=l.cr-l.dr;bal+=inc;rows.push({date:e.date,desc:e.desc,inc:inc>0?inc:0,dec:inc<0?-inc:0,int:0,bal,t:e.tx})}
+      else if(p.type==='debtor'&&l.acc==='1300'){const inc=l.dr-l.cr;bal+=inc;rows.push({date:e.date,desc:e.desc,inc:inc>0?inc:0,dec:inc<0?-inc:0,int:0,bal,t:e.tx})}
+      else if(p.type==='creditor'&&['2100','2200','2300','2400'].includes(l.acc)){const inc=l.cr-l.dr;bal+=inc;rows.push({date:e.date,desc:e.desc+' ['+ACC[l.acc].n+']',inc:inc>0?inc:0,dec:inc<0?-inc:0,int:0,bal,t:e.tx})}
+      else if(p.type==='creditor'&&l.acc==='5300'){rows.push({date:e.date,desc:e.desc,inc:0,dec:0,int:l.dr,bal,t:e.tx})}
+    }
+  }
+  return{rows,bal:r2(bal)};
+}
+
+/* ---------- งบการเงิน ---------- */
+function incomeStmt(y){return incomeStmtR(ySt(y),yEn(y))}
+function incomeStmtR(f,t){
+  const g=a=>nat(a,f,t);
+  const rev=[['4100'],['4200'],['4300'],['4400'],['4500']].map(([a])=>[ACC[a].n,g(a)]);
+  const totRev=r2(rev.reduce((s,r)=>s+r[1],0));
+  const rawOpen=g('5130'),rawBuy=g('5100'),rawClose=g('5140'),rawUsed=r2(rawOpen+rawBuy-rawClose),freightIn=g('5110'),prodExp=g('5120'),prod=r2(rawUsed+freightIn+prodExp);
+  const gOpen=g('5220'),gBuy=g('5200'),gExp=g('5210'),gClose=g('5230'),cogs=r2(gOpen+gBuy+gExp-gClose);
+  const int=g('5300'),svo=g('5310'),svc=r2(int+svo),cost=r2(prod+cogs+svc);
+  const opx=g('5400'),dep=g('5410'),loss=g('5420'),opex=r2(opx+dep+loss),totExp=r2(cost+opex);
+  return{rev,totRev,rawOpen,rawBuy,rawClose,rawUsed,freightIn,prodExp,prod,gOpen,gBuy,gExp,gClose,cogs,int,svo,svc,cost,opx,dep,loss,opex,totExp,profit:r2(totRev-totExp)};
+}
+function balanceSheet(y){return balanceSheetAt(yEn(y))}
+function balanceSheetAt(en){
+  const y=+en.slice(0,4),g=a=>nat(a,MIN,en),pp=priorProfit(y),is=incomeStmtR(ySt(y),en);
+  const A=['1100','1200','1300','1400','1500'].map(a=>[ACC[a].n,g(a)]);
+  const cost=g('1600'),acc=g('1650'),net=r2(cost-acc);
+  const totA=r2(A.reduce((s,r)=>s+r[1],0)+net);
+  const Ls=['2100','2200','2300','2400'].map(a=>[ACC[a].n,g(a)]),totL=r2(Ls.reduce((s,r)=>s+r[1],0));
+  const sh=g('3100'),ret=r2(g('3200')+pp),cur=is.profit,totE=r2(sh+ret+cur);
+  return{A,cost,acc,net,totA,Ls,totL,sh,ret,cur,totE,tot:r2(totL+totE),ok:Math.abs(totA-r2(totL+totE))<0.01};
+}
+function trialBalance(y,m){return trialAt(mEn(y,m))}
+function trialAt(en){
+  const y=+en.slice(0,4),st=ySt(y),rows=[];
+  for(const a of ACCS){
+    const s=isBS(a)?sumAcc(a,MIN,en):sumAcc(a,st,en),net=r2(s.d-s.c);
+    if(s.d===0&&s.c===0)continue;rows.push({a,n:ACC[a].n,dr:net>0?net:0,cr:net<0?-net:0});
+  }
+  const pp=priorProfit(y);if(Math.abs(pp)>0.004)rows.push({a:'3300',n:'กำไร(ขาดทุน)สะสมปีก่อน',dr:pp<0?-pp:0,cr:pp>0?pp:0});
+  rows.sort((a,b)=>a.a<b.a?-1:1);
+  const td=r2(rows.reduce((s,r)=>s+r.dr,0)),tc=r2(rows.reduce((s,r)=>s+r.cr,0));
+  return{rows,td,tc};
+}
+function ledgerData(a,y,m){return ledgerR(a,mSt(y,m),mEn(y,m))}
+function ledgerR(a,st,en){
+  const from=isBS(a)?MIN:ySt(+st.slice(0,4));
+  let cd=0,cc=0;for(const e of E()){if(e.date>=from&&e.date<st)for(const l of e.lines)if(l.acc===a){cd+=l.dr;cc+=l.cr}}
+  const rows=[];
+  for(const e of E()){if(e.date<st||e.date>en)continue;for(const l of e.lines)if(l.acc===a)rows.push({date:e.date,desc:e.desc,dr:l.dr,cr:l.cr,t:e.tx})}
+  return{cd:r2(cd),cc:r2(cc),rows};
+}
+/* ============ ส่วนติดต่อผู้ใช้ ============ */
+const IC={
+ back:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+ home:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>',
+ in:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="M7.5 10l4.5 4.5 4.5-4.5"/><path d="M4 15v4h16v-4"/></svg>',
+ out:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M7.5 8L12 3.5 16.5 8"/><path d="M4 15v4h16v-4"/></svg>',
+ doc:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>',
+ book:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 21V5"/><path d="M9 8h6"/></svg>',
+ cash:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/></svg>',
+ bank:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5"/><path d="M5 10v8M10 10v8M14 10v8M19 10v8"/><path d="M3 21h18"/></svg>',
+ gear:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>',
+ chev:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>'
+};
+let nav=[{s:'home',p:{}}];
+const app=()=>$('#app');
+function go(s,p){nav.push({s,p:p||{}});render()}
+function back(){if(nav.length>1)nav.pop();render()}
+function toHome(){nav=[{s:'home',p:{}}];render()}
+function replace(s,p){nav[nav.length-1]={s,p:p||{}};render()}
+let toastT=null;
+function toast(m){let t=$('.toast');if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2600)}
+const jp=o=>esc(JSON.stringify(o));
+const tile=(title,hint,a,p,cls,icon)=>`<button class="tile ${cls||''}" data-a="${a}" data-p="${jp(p||{})}"><span class="ic">${icon||IC.doc}</span><span style="flex:1;min-width:0"><span class="tt">${esc(title)}</span>${hint?`<span class="hh" style="display:block">${esc(hint)}</span>`:''}</span>${IC.chev}</button>`;
+const years=()=>{let a=Math.min(+S.org.startYear||thisYear(),thisYear()),b=maxYear();for(const t of S.tx)a=Math.min(a,+t.date.slice(0,4));const r=[];for(let y=a;y<=b;y++)r.push(y);return r};
+const yrSel=()=>`<select class="yearsel" id="yearSel" aria-label="เลือกปี">${years().map(y=>`<option value="${y}" ${y===S.ui.year?'selected':''}>พ.ศ. ${y+543}</option>`).join('')}</select>`;
+const monSel=()=>`<select id="monSel" aria-label="เลือกเดือน" style="width:auto"><option value="0">ทั้งปี</option>${MF.map((m,i)=>`<option value="${i+1}" ${(S.ui.m|0)===i+1?'selected':''}>${m}</option>`).join('')}</select>`;
+const periodTxt=(y,m)=>m?MF[m-1]+' '+(y+543):'ปี พ.ศ. '+(y+543);
+
+/* ---------- ตาราง ---------- */
+function cell(c){if(c==null)return'';if(typeof c==='number')return esc(fmt(c));if(typeof c==='object'&&c.h!==undefined)return c.h;return esc(c)}
+function tbl(cols,rows,foot,opt){
+  opt=opt||{};
+  const grp=cols.some(c=>c.grp);let g1='';
+  if(grp){const gs=[];cols.forEach(c=>{const l=gs[gs.length-1];if(l&&l.g===(c.grp||'')&&c.grp)l.n++;else gs.push({g:c.grp||'',n:1})});g1='<tr>'+gs.map(x=>x.g?`<th colspan="${x.n}">${esc(x.g)}</th>`:`<th colspan="${x.n}" rowspan="2">${''}</th>`).join('')+'</tr>'}
+  let h;
+  if(grp){
+    const top=[];const cs=cols;let i=0;let row1='<tr>',row2='<tr>';
+    while(i<cs.length){const c=cs[i];if(c.grp){let n=1;while(i+n<cs.length&&cs[i+n].grp===c.grp)n++;row1+=`<th colspan="${n}">${esc(c.grp)}</th>`;for(let k=0;k<n;k++)row2+=`<th class="${cs[i+k].n?'n':''}">${esc(cs[i+k].t)}</th>`;i+=n}
+      else{row1+=`<th rowspan="2" class="${c.n?'n':''}">${esc(c.t)}</th>`;i++}}
+    h=row1+'</tr>'+row2+'</tr>';
+  }else h='<tr>'+cols.map(c=>`<th class="${c.n?'n':''}">${esc(c.t)}</th>`).join('')+'</tr>';
+  const body=rows.map(r=>{const o=Array.isArray(r)?{c:r}:r;return`<tr class="${o.cls||''} ${o.act?'clk':''}" ${o.act?`data-a="${o.act[0]}" data-p="${jp(o.act[1])}"`:''}>${o.c.map((c,i)=>`<td class="${cols[i]&&cols[i].n?'n':''} ${cols[i]&&cols[i].d?'d':''}">${cell(c)}</td>`).join('')}</tr>`}).join('');
+  const f=foot?`<tr class="tot">${foot.map((c,i)=>`<td class="${cols[i]&&cols[i].n?'n':''}">${cell(c)}</td>`).join('')}</tr>`:'';
+  return`<div class="scroll"><table class="${opt.cls||''}"><thead>${h}</thead><tbody>${body||`<tr><td colspan="${cols.length}" class="mt">ยังไม่มีรายการ</td></tr>`}${f}</tbody></table></div>`;
+}
+function stmt(rows){
+  return`<div class="scroll"><table class="stm"><tbody>${rows.map(r=>`<tr class="${r.k||''}"><td>${esc(r.t)}</td><td class="n">${r.a==null?'':esc(fmt(r.a,'0.00'))}</td><td class="n">${r.b==null?'':`<span class="${r.b<0?'neg':''}">${esc(fmt(r.b,'0.00'))}</span>`}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+/* ---------- ตัวสร้างหน้า ---------- */
+function shell(o){
+  const first=nav.length<=1;
+  return`<div class="top"><div class="top-in">
+  ${first?'':`<button class="iconbtn" data-a="back" aria-label="ย้อนกลับ">${IC.back}</button>`}
+  <div class="ttl">${esc(o.title)}${o.sub?`<small>${esc(o.sub)}</small>`:''}</div>
+  ${o.year?yrSel():''}
+  ${first?'':`<button class="iconbtn" data-a="home" aria-label="กลับหน้าเมนูหลัก">${IC.home}</button>`}</div></div>
+  <main class="wrap">${o.html}</main>${o.bar?`<div class="savebar"><div>${o.bar}</div></div>`:''}`;
+}
+const SCR={};
+function render(){
+  const cur=nav[nav.length-1];
+  if(S.setup&&S.auth&&S.auth.password&&!unlocked&&cur.s!=='login'){nav=[{s:'login',p:{}}]}
+  else if(!S.setup&&cur.s!=='setup'&&cur.s!=='settings'){nav=[{s:'setup',p:{}}]}
+  else if(S.setup&&!(S.auth&&S.auth.password)&&!S.org.demo&&cur.s!=='setup'&&cur.s!=='settings'&&cur.s!=='shareSetup'){nav=[{s:'setup',p:{}}]}
+  const c2=nav[nav.length-1];const o=SCR[c2.s](c2.p||{});
+  app().innerHTML=shell(o);
+  if(o.after)o.after(c2.p||{});
+  window.scrollTo(0,0);
+}
+const demoBanner=()=>S.org.demo?`<div class="banner"><span>ตอนนี้เป็น<b>ข้อมูลตัวอย่าง</b> ไม่ใช่ข้อมูลจริงของกลุ่ม</span><button class="btn sm" data-a="clearDemo">ล้างตัวอย่างและเริ่มข้อมูลจริง</button></div>`:'';
+
+/* ---------- หน้าแรก: ข้อมูลวิสาหกิจ ---------- */
+SCR.setup=p=>{
+  const o=S.org,edit=S.setup,needsAccess=!(S.auth&&S.auth.password),firstPage=!edit||needsAccess;
+  return{title:firstPage?'เริ่มต้นใช้งาน':'แก้ไขข้อมูลวิสาหกิจ',sub:firstPage?'กรอกข้อมูลครั้งแรกและตั้งรหัสผ่าน':'แก้ไขข้อมูลกลุ่ม',html:`
+  ${firstPage?`<div class="card"><h2>ยินดีต้อนรับสู่สมุดบัญชีวิสาหกิจชุมชน</h2><p class="sub">กรอกข้อมูลพื้นฐานของกลุ่มก่อน จากนั้นเลือกว่าวันนี้ <b>รับเงิน</b> <b>จ่ายเงิน</b> หรือ<b>รายการทั่วไป</b> แล้วกรอกตัวเลข ระบบจะลงสมุด บัญชีแยกประเภท งบทดลอง ทะเบียนคุม และงบการเงินให้เอง</p></div>`:''}
+  <div class="card form two">
+    <div class="field full"><label for="o_name">ชื่อวิสาหกิจชุมชน *</label><input type="text" id="o_name" value="${esc(o.name)}" placeholder="เช่น วิสาหกิจชุมชนกลุ่มแปรรูปกล้วยตาก บ้านสวนใหม่"></div>
+    <div class="field"><label for="o_kind">ประเภทกิจกรรม</label><input type="text" id="o_kind" value="${esc(o.kind)}" placeholder="เช่น แปรรูปอาหาร ทอผ้า"></div>
+    <div class="field"><label for="o_reg">เลขทะเบียนวิสาหกิจชุมชน</label><input type="text" id="o_reg" value="${esc(o.regno)}"></div>
+    <div class="field full"><label for="o_addr">ที่อยู่</label><textarea id="o_addr" rows="2" placeholder="บ้านเลขที่ หมู่ ตำบล อำเภอ จังหวัด">${esc(o.address)}</textarea></div>
+    <div class="field"><label for="o_tel">เบอร์โทรศัพท์</label><input type="text" id="o_tel" inputmode="tel" value="${esc(o.phone)}"></div>
+    <div class="field"><label for="o_year">เริ่มทำบัญชีปี พ.ศ.</label><input type="number" id="o_year" inputmode="numeric" value="${(+o.startYear||thisYear())+543}"></div>
+    <div class="field"><label for="o_pres">ประธานกลุ่ม</label><input type="text" id="o_pres" value="${esc(o.president)}"></div>
+    <div class="field"><label for="o_book">ผู้จัดทำบัญชี</label><input type="text" id="o_book" value="${esc(o.bookkeeper)}"></div>
+    ${needsAccess?`<div class="field"><label for="o_pass">ตั้งรหัสผ่านสำหรับเข้าใช้งาน *</label><input type="password" id="o_pass" autocomplete="new-password" placeholder="อย่างน้อย 4 ตัวอักษร"></div><div class="field"><label for="o_pass2">ยืนยันรหัสผ่าน *</label><input type="password" id="o_pass2" autocomplete="new-password"></div><p class="hint full">รหัสผ่านนี้ใช้ล็อกหน้าจอแอปบนอุปกรณ์นี้ ข้อมูลยังเก็บในเบราว์เซอร์เครื่องนี้</p>`:''}
+    <div class="field full"><div id="o_err" class="err"></div></div>
+  </div>
+  ${firstPage&&!S.org.demo?`<div class="card"><h3>อยากลองดูก่อน</h3><p class="sub" style="margin:6px 0 12px">ใส่ข้อมูลสมมติของกลุ่มแปรรูปกล้วยตาก เพื่อดูว่าสมุดและงบการเงินหน้าตาเป็นอย่างไร ลบทิ้งได้ทุกเมื่อ</p><button class="btn ghost" data-a="loadDemo">ดูตัวอย่างข้อมูล</button></div>`:""}`,
+  bar:`<button class="btn block" data-a="saveOrg">${firstPage?'บันทึกและไปหน้าลงชื่อหุ้นส่วน': 'บันทึกข้อมูล'}</button>`};
+};
+
+/* ---------- เข้าสู่ระบบบนอุปกรณ์นี้ ---------- */
+SCR.login=()=>({title:'เข้าสู่ระบบ',sub:'สมุดบัญชีวิสาหกิจชุมชน',html:`
+  <div class="card"><h2>ยินดีต้อนรับกลับมา</h2><p class="sub">กรอกรหัสผ่านที่ตั้งไว้เพื่อเปิดสมุดบัญชีของกลุ่มนี้</p>
+  <div class="field"><label for="login_pass">รหัสผ่าน</label><input type="password" id="login_pass" autocomplete="current-password" placeholder="กรอกรหัสผ่าน"></div>
+  <div id="login_err" class="err" style="margin-top:10px"></div>
+  <p class="hint" style="margin-top:12px">ระบบนี้ล็อกการเข้าใช้งานในเบราว์เซอร์เครื่องนี้เท่านั้น ไม่ใช่ระบบบัญชีออนไลน์ที่ป้องกันการเข้าถึงไฟล์หรือข้อมูลจากผู้เชี่ยวชาญ</p></div>`,bar:`<button class="btn block" data-a="loginIn">เข้าสู่ระบบ</button>`});
+SCR.shareSetup=()=>({title:'ลงชื่อหุ้นส่วน',sub:'หน้าเสริม · ข้ามได้',html:`
+  <p class="sub">เพิ่มรายชื่อหุ้นส่วน/สมาชิกได้หลายคนในหน้านี้ ข้อมูลนี้ใช้เก็บทะเบียนสมาชิกเบื้องต้น ไม่ได้บันทึกรับเงินค่าหุ้นเข้าบัญชีให้อัตโนมัติ หากรับเงินจริงให้ลงรายการ “รับค่าหุ้น” แยกต่างหาก</p>
+  <div id="shareRows" class="sect">
+    ${[0,1].map(i=>shareRowHTML(i)).join('')}
+  </div>
+  <button class="btn ghost" type="button" data-a="addShareRow">+ เพิ่มชื่อหุ้นส่วน</button>
+  <div class="card"><p class="hint">ช่องเลขบัตรประชาชนและที่อยู่เป็นข้อมูลส่วนบุคคล ให้กรอกเท่าที่จำเป็นและเก็บอุปกรณ์ให้ปลอดภัย</p></div>`,bar:`<button class="btn block" data-a="saveShareSetup">บันทึกและเริ่มใช้งาน</button><button class="btn ghost block" data-a="skipShareSetup">ข้ามขั้นตอนนี้</button>`});
+function shareRowHTML(i){return `<div class="card form two share-row" data-index="${i}">
+  <div class="field"><label>ชื่อ-นามสกุลหุ้นส่วน</label><input type="text" class="sh_name" placeholder="ชื่อและนามสกุล"></div>
+  <div class="field"><label>เลขทะเบียน/รหัสสมาชิก</label><input type="text" class="sh_no" placeholder="ถ้ามี"></div>
+  <div class="field"><label>จำนวนเงินหุ้น (บาท)</label><input type="number" class="sh_amount" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+  <div class="field"><label>เบอร์โทรศัพท์</label><input type="text" class="sh_phone" inputmode="tel" placeholder="ไม่บังคับ"></div>
+  <div class="field full"><label>ที่อยู่</label><input type="text" class="sh_addr" placeholder="ไม่บังคับ"></div>
+  <div class="field full"><label>เลขบัตรประชาชน (ไม่บังคับ)</label><input type="text" class="sh_idc" inputmode="numeric" placeholder="กรอกเฉพาะเมื่อจำเป็น"></div>
+  <div class="field full"><button type="button" class="btn danger sm" data-a="removeShareRow">ลบแถวนี้</button></div>
+</div>`}
+
+/* ---------- เมนูหลัก ---------- */
+SCR.home=()=>{
+  const y=S.ui.year,en=yEn(y),cash=nat('1100',MIN,en),bank=nat('1200',MIN,en),pr=incomeStmt(y).profit;
+  return{title:S.org.name||'สมุดบัญชี',sub:'พ.ศ. '+(y+543),year:true,html:`
+  ${demoBanner()}
+  <div><h2 style="margin-bottom:4px">วันนี้มีรายการอะไร</h2><p class="sub">เลือกประเภทรายการ แล้วกรอกตามขั้นตอน</p></div>
+  <div class="hero">
+   <button class="tile in" data-a="go" data-s="menuAcct" data-p="${jp({k:'in'})}"><span class="ic">${IC.in}</span><span><span class="tt">รับ</span><span class="hh" style="display:block">มีเงินเข้า เช่น ขายของ รับค่าหุ้น รับดอกเบี้ย</span></span></button>
+   <button class="tile out" data-a="go" data-s="menuAcct" data-p="${jp({k:'out'})}"><span class="ic">${IC.out}</span><span><span class="tt">จ่าย</span><span class="hh" style="display:block">มีเงินออก เช่น ซื้อวัตถุดิบ ค่าแรง ค่าใช้จ่าย</span></span></button>
+   <button class="tile gen" data-a="go" data-s="gen"><span class="ic">${IC.doc}</span><span><span class="tt">ทั่วไป</span><span class="hh" style="display:block">ยังไม่มีเงินเข้าออก เช่น ขายเชื่อ ซื้อเชื่อ ยอดยกมา ปิดงวด</span></span></button>
+  </div>
+  <div class="kpis">
+   <div class="kpi"><div class="k">เงินสดคงเหลือ</div><div class="v">${esc(fmt(cash,'0.00'))}</div></div>
+   <div class="kpi"><div class="k">เงินฝากธนาคาร</div><div class="v">${esc(fmt(bank,'0.00'))}</div></div>
+   <div class="kpi"><div class="k">กำไร (ขาดทุน) ปี ${y+543}</div><div class="v ${pr<0?'neg':''}">${esc(fmt(pr,'0.00'))}</div></div>
+  </div>
+  <div class="grid">
+   ${goT('reports',{},'ดูสมุด บัญชี ทะเบียน และงบการเงิน','ทุกอย่างคำนวณให้อัตโนมัติ','',IC.book)}
+   ${goT('settings',{},'ข้อมูลกลุ่ม สำรองข้อมูล ส่งออก Excel','','',IC.gear)}
+  </div>`};
+};
+SCR.menuAcct=p=>{
+  const k=p.k,en=yEn(S.ui.year),cash=nat('1100',MIN,en),bank=nat('1200',MIN,en);
+  return{title:k==='in'?'รับเงิน':'จ่ายเงิน',sub:'เงินเข้า-ออกทางไหน',html:`
+  <div><h2>${k==='in'?'รับเงินเข้าทางไหน':'จ่ายเงินออกจากทางไหน'}</h2></div>
+  <div class="grid big">
+   ${goT('cats',{k,acct:'cash'},'เงินสด','บันทึกลงสมุดเงินสด · คงเหลือ '+fmt(cash,'0.00')+' บาท',k,IC.cash)}
+   ${goT('cats',{k,acct:'bank'},'เงินฝากธนาคาร','บันทึกลงสมุดเงินฝากธนาคาร · คงเหลือ '+fmt(bank,'0.00')+' บาท',k,IC.bank)}
+  </div>`};
+};
+const goT=(s,p,title,hint,cls,icon)=>`<button class="tile ${cls||''}" data-a="go" data-s="${s}" data-p="${jp(p)}"><span class="ic">${icon||IC.doc}</span><span style="flex:1;min-width:0"><span class="tt">${esc(title)}</span>${hint?`<span class="hh" style="display:block">${esc(hint)}</span>`:''}</span>${IC.chev}</button>`;
+function xfLabel(cat,acct){
+  if(acct==='cash')return cat==='wd'?'ถอนเงินฝากธนาคาร':'นำเงินสดฝากธนาคาร';
+  return cat==='dep'?'รับนำฝาก (นำเงินสดมาฝาก)':'ถอนเงินจากบัญชี';
+}
+const xfCat=(k,acct)=>(k==='in')===(acct==='cash')?'wd':'dep';
+SCR.cats=p=>{
+  const{k,acct}=p,bk=acct==='cash'?'เงินสด':'เงินฝากธนาคาร';
+  const G=k==='in'?[['รายได้',['sale','interest','service','inc_other']],['เงินทุนและรายการอื่น',['share','XF','OT']]]
+    :[['ต้นทุนการผลิต',['buy_raw','freight_in','prod_exp']],['ต้นทุนขาย',['buy_goods','buy_exp']],['ต้นทุนบริการ',['int_exp','svc_other']],['อื่นๆ',['share_ret','XF','opex','OT']]];
+  const t1=c=>{
+    if(c==='XF'){const x=xfCat(k,acct);return goT('form',{cat:x,acct},xfLabel(x,acct),'ลงทั้งสมุดเงินสดและสมุดเงินฝากธนาคารให้เอง',k,k==='in'?IC.in:IC.out)}
+    if(c==='OT')return goT('others',{k,acct},'อื่นๆ',k==='in'?'รับชำระหนี้ รับเงินกู้ เงินอุดหนุน':'ชำระหนี้ ให้กู้ ซื้อสินทรัพย์ จ่ายอื่นๆ',k,IC.doc);
+    return goT('form',{cat:c,acct},CD[c].t,CD[c].h,k,k==='in'?IC.in:IC.out)};
+  const recent=S.tx.filter(t=>(t.kind===k&&t.acct===acct)||(t.kind==='xfer'&&(((t.cat==='dep')===(acct==='bank'))===(k==='in')))).sort((a,b)=>cmp2(b,a));
+  return{title:(k==='in'?'รับ':'จ่าย')+' · '+bk,sub:'เลือกประเภทรายการ',html:
+   G.map(([h,cs])=>`<div class="sect"><h3>${esc(h)}</h3><div class="grid">${cs.map(t1).join('')}</div></div>`).join('')+
+   `<div class="sect recent-history"><h3>รายการในสมุดนี้ทั้งหมด (แตะเพื่อแก้ไข)</h3>${recentList(recent,acct)}</div>`};
+};
+function recentList(list,acct){
+  if(!list.length)return'<div class="empty card">ยังไม่มีรายการ</div>';
+  return tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:'บาท',n:1}],list.map(t=>({c:[dshort(t.date),txDesc(t),t.amount?+t.amount:''],act:['go',{s:'form',p:{cat:t.cat,acct:t.acct||acct,id:t.id}}]})));
+}
+SCR.others=p=>{
+  const{k,acct}=p,L=k==='in'?OTHER_IN:OTHER_OUT;
+  return{title:'อื่นๆ · '+(acct==='cash'?'เงินสด':'เงินฝากธนาคาร'),sub:k==='in'?'รับ':'จ่าย',html:`<div class="grid">${L.map(c=>goT('form',{cat:c,acct},CD[c].t,CD[c].h,k,k==='in'?IC.in:IC.out)).join('')}</div>`};
+};
+SCR.gen=()=>{
+  const L=['credit_sale','credit_buy_goods','credit_buy_raw','stock_in','stock_out'];
+  const recent=S.tx.filter(t=>t.kind==='gen'&&!isOpenCat(t.cat)).sort((a,b)=>cmp2(b,a)).slice(0,6);
+  return{title:'รายการทั่วไป',sub:'ยังไม่เกี่ยวกับการรับจ่ายเงิน',html:`
+  <p class="sub">ใช้บันทึกรายการที่ยังไม่มีเงินเข้าออก เมื่อมีการรับหรือจ่ายเงินจริงค่อยไปบันทึกที่เมนู รับ หรือ จ่าย</p>
+  <div class="grid">${L.map(c=>goT('form',{cat:c},CD[c].t,CD[c].h,'gen',IC.doc)).join('')}
+  ${goT('form',{cat:'interest',acct:'bank'},'ดอกเบี้ยเงินฝากธนาคาร','ธนาคารจ่ายดอกเบี้ยเข้าบัญชีให้กลุ่ม','gen',IC.bank)}
+  ${goT('opens',{},'ยอดยกมา (ตอนเริ่มทำบัญชี)','เงินสด เงินฝาก ลูกหนี้ เจ้าหนี้ สินค้า สินทรัพย์ ค่าหุ้น','gen',IC.book)}
+  ${goT('closing',{},'ปิดงวดสิ้นปี','บันทึกสินค้า/วัตถุดิบคงเหลือปลายปี ระบบคิดค่าเสื่อมให้เอง','gen',IC.book)}
+  ${goT('form',{cat:'dispose_asset'},CD.dispose_asset.t,CD.dispose_asset.h,'gen',IC.doc)}
+  ${goT('form',{cat:'journal'},CD.journal.t,CD.journal.h,'gen',IC.doc)}</div>
+  <div class="sect"><h3>รายการทั่วไปล่าสุด (แตะเพื่อแก้ไข)</h3>${recentList(recent,null)}</div>`};
+};
+SCR.opens=()=>{
+  const list=S.tx.filter(t=>isOpenCat(t.cat)).sort(cmp2);
+  return{title:'ยอดยกมา',sub:'บันทึกครั้งเดียวตอนเริ่มทำบัญชี',html:`
+  <p class="sub">ถ้ากลุ่มเริ่มทำบัญชีใหม่ ให้ลงสิ่งที่มีอยู่แล้วตอนเริ่มต้น ระบบจะคำนวณทุนสะสมให้เอง ถ้าไม่มีอะไรยกมาข้ามได้</p>
+  <div class="grid">${OPENS.map(c=>goT('form',{cat:c},CD[c].t,CD[c].h,'gen',IC.book)).join('')}</div>
+  <div class="sect"><h3>ยอดยกมาที่บันทึกแล้ว (แตะเพื่อแก้ไข)</h3>${recentList(list,null)}</div>`};
+};
+
+/* ---------- ฟอร์มบันทึกรายการ ---------- */
+function parseF(s){
+  const i=s.indexOf(':'),base=i<0?s:s.slice(0,i),rest=i<0?'':s.slice(i+1);
+  const req=base.endsWith('!'),nm=base.replace(/[!?]$/,'');
+  if(nm==='party'||nm==='item'){const j=rest.indexOf(':');let ty=j<0?rest:rest.slice(0,j);const opt=ty.endsWith('?'),rq=ty.endsWith('!');ty=ty.replace(/[!?]$/,'');return{nm,ty,req:nm==='party'?!opt:rq}}
+  return{nm,req,label:rest};
+}
+const cat0=p=>p.cat==='dispose_asset';
+function formKind(cat,acct){const d=CD[cat];if(cat==='dispose_asset')return acct?'in':'gen';if(d.k==='xfer')return(cat==='dep')===(acct==='bank')?'in':'out';return d.k==='open'||d.k==='gen'?'gen':d.k}
+SCR.form=p=>{
+  const d=CD[p.cat],acct=p.acct||null,t=p.id?S.tx.find(x=>x.id===p.id):null,kind=formKind(p.cat,acct);
+  const v=t||{date:S.ui.lastDate||todayISO()};
+  const title=d.k==='xfer'?xfLabel(p.cat,acct):d.t;
+  const book=cat0(p)?'ลงสมุดตามวิธีรับเงินที่เลือก':d.k==='xfer'?'ลงสมุดเงินสดและสมุดเงินฝากธนาคาร':d.k==='open'?'ยอดยกมา':d.k==='gen'?'ลงสมุดรายวันทั่วไป':(acct==='cash'?'ลงสมุดเงินสด':'ลงสมุดเงินฝากธนาคาร');
+  let h='';
+  for(const spec of d.f){
+    const f=parseF(spec);
+    if(f.nm==='date')h+=`<div class="field"><label for="f_date">วันที่</label><input type="date" id="f_date" value="${esc(v.date)}"></div>`;
+    else if(f.nm==='amount'||f.nm==='amount0')h+=`<div class="field"><label for="f_amount">${esc(f.label||'จำนวนเงิน (บาท)')}</label><input type="number" class="amount" id="f_amount" inputmode="decimal" step="0.01" min="0" placeholder="0.00" value="${t&&(t.amount||f.nm==='amount0')?esc(t.amount):''}" ${d.f.some(s=>s.startsWith('lines:'))?'readonly':''}></div>`;
+    else if(f.nm==='price')h+=`<div class="field"><label for="f_price">${esc(f.label||'ราคาต่อหน่วย (บาท)')}</label><input type="number" id="f_price" inputmode="decimal" step="any" min="0" placeholder="0.00" value="${t&&t.amount&&(+t.qty||+t.pcs)?pround(t.amount/(+t.qty||+t.pcs)):''}"><span class="hint">ใส่จำนวนกับราคาต่อหน่วย ระบบคิดจำนวนเงินให้เอง</span></div>`;
+    else if(f.nm==='pcs')h+=`<div class="field"><label for="f_pcs">จำนวนชิ้น</label><input type="number" id="f_pcs" inputmode="numeric" step="1" min="1" value="${t&&t.pcs?esc(t.pcs):1}"></div>`;
+    else if(f.nm==='salvage')h+=`<div class="field"><label for="f_salv">มูลค่าซาก (บาท)</label><input type="number" id="f_salv" inputmode="decimal" step="0.01" min="0" value="${t&&t.salvage?esc(t.salvage):0}"><span class="hint">ราคาที่คาดว่าจะขายได้เมื่อเลิกใช้ ค่าเสื่อมคิดจาก (ราคาทุน − มูลค่าซาก) ถ้าไม่มีใส่ 0</span></div>`;
+    else if(f.nm==='asset'){
+      const L=assetList().filter(x=>!x.dispId||(t&&x.dispId===t.id));
+      h+=`<div class="field full"><label for="f_asset">สินทรัพย์ที่จำหน่าย</label><select id="f_asset"><option value="">— เลือก —</option>${L.map(x=>`<option value="${x.id}" ${t&&t.assetId===x.id?'selected':''}>${esc(x.name)}${x.pcs>1?' ('+x.pcs+' ชิ้น)':''} · ราคาทุน ${esc(fmt(x.cost))}</option>`).join('')}</select><div id="dispHint" class="hint"></div>${L.length?'':'<span class="err">ยังไม่มีสินทรัพย์ที่จำหน่ายได้</span>'}</div>`;
+    }
+    else if(f.nm==='recv')h+=`<div class="field full"><label for="f_recv">รับเงินที่ได้จากการจำหน่ายเข้า</label><select id="f_recv"><option value="cash" ${(t?t.acct:acct||'cash')==='cash'?'selected':''}>เงินสด</option><option value="bank" ${(t?t.acct:acct)==='bank'?'selected':''}>เงินฝากธนาคาร</option><option value="none" ${t&&!t.acct?'selected':''}>ไม่ได้รับเงิน (ทิ้ง ชำรุด ยกให้)</option></select></div>`;
+    else if(f.nm==='range')h+=lotHTML(t,v);
+    else if(f.nm==='lines'||f.nm==='linesq')h+=`<div class="field full" id="linesBox" data-priced="${f.nm==='lines'?1:0}" data-kind="${esc(f.label)}"><label>${f.nm==='lines'?'รายการในบิล':'รายการวัตถุดิบที่เบิก'}</label><div id="lineRows" class="sect"></div><div><button class="btn ghost sm" data-a="addLine">+ เพิ่มรายการ</button></div></div>`;
+    else if(f.nm==='desc')h+=`<div class="field ${f.label?'':'full'}"><label for="f_desc">${esc(f.label||(f.req?'รายละเอียด':'รายละเอียด (ไม่บังคับ)'))}</label><input type="text" id="f_desc" value="${esc(t?t.desc:'')}" placeholder="${f.req?'พิมพ์รายละเอียด':'เช่น ขายให้ป้าแดง ตลาดนัดวันเสาร์'}"></div>`;
+    else if(f.nm==='qty')h+=`<div class="field"><label for="f_qty">จำนวน${f.req?'':' (ถ้าระบุสินค้า)'}</label><input type="number" id="f_qty" inputmode="decimal" step="any" min="0" value="${t&&t.qty?esc(t.qty):''}"></div>`;
+    else if(f.nm==='party'){
+      const L=S.parties.filter(x=>x.type===f.ty),lb={member:'สมาชิก',debtor:'ลูกหนี้',creditor:'เจ้าหนี้'}[f.ty];
+      h+=`<div class="field full"><label for="f_party">${lb}${f.req?'':' (ถ้ามี)'}</label><select id="f_party"><option value="">${f.req?'— เลือก —':'— ไม่ระบุ —'}</option>${L.map(x=>`<option value="${x.id}" ${t&&t.partyId===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}<option value="__new">+ เพิ่ม${lb}ใหม่</option></select>${DEBT[p.cat]?'<div id="debtHint" class="hint" style="margin-top:4px"></div>':''}
+      <div id="newParty" hidden class="form two" style="margin-top:6px"><div class="field"><label for="f_pname">ชื่อ-นามสกุล</label><input type="text" id="f_pname"></div>${f.ty==='member'?'<div class="field"><label for="f_pno">เลขทะเบียนสมาชิก</label><input type="text" id="f_pno"></div>':''}<div class="field"><label for="f_paddr">ที่อยู่ (ไม่บังคับ)</label><input type="text" id="f_paddr"></div><div class="field"><label for="f_pid">เลขบัตรประชาชน (ไม่บังคับ)</label><input type="text" id="f_pid" inputmode="numeric"></div></div></div>`;
+    }else if(f.nm==='item'){
+      const L=S.items.filter(x=>x.kind===f.ty),lb=f.ty==='goods'?'สินค้า':'วัตถุดิบ';
+      h+=`<div class="field full"><label for="f_item">${lb}${f.req?'':' (ถ้าต้องการให้ลงทะเบียนคุม)'}</label><select id="f_item"><option value="">${f.req?'— เลือก —':'— ไม่ระบุ —'}</option>${L.map(x=>`<option value="${x.id}" ${t&&t.itemId===x.id?'selected':''}>${esc(x.name)} (${esc(x.unit)})</option>`).join('')}<option value="__new">+ เพิ่ม${lb}ใหม่</option></select>
+      <div id="newItem" hidden class="form two" style="margin-top:6px"><div class="field"><label for="f_iname">ชื่อ${lb}</label><input type="text" id="f_iname"></div><div class="field"><label for="f_iunit">หน่วยนับ</label><input type="text" id="f_iunit" placeholder="เช่น กก. ถุง ชิ้น"></div>${f.ty==='goods'?'<div class="field"><label for="f_iprice">ราคาขายต่อหน่วย (ไม่บังคับ)</label><input type="number" id="f_iprice" inputmode="decimal" step="0.01"></div>':''}</div></div>`;
+    }else if(f.nm==='ctype')h+=`<div class="field full"><label for="f_ctype">ประเภทหนี้</label><select id="f_ctype">${CTYPES.map(([a,n])=>`<option value="${a}" ${(t?t.ctype:p.cat==='loan_in'?'2200':'2100')===a?'selected':''}>${esc(n)}</option>`).join('')}</select></div>`;
+    else if(f.nm==='sub')h+=`<div class="field full"><label for="f_sub">ประเภทค่าใช้จ่ายในการผลิต</label><select id="f_sub">${SUBS.map(([a,n])=>`<option value="${a}" ${(t&&t.sub||'other')===a?'selected':''}>${esc(n)}</option>`).join('')}</select><span class="hint">ใช้แยกแสดงในรายงานต้นทุนการผลิต</span></div>`;
+    else if(f.nm==='life')h+=`<div class="field"><label for="f_life">อายุการใช้งาน (ปี)</label><input type="number" id="f_life" inputmode="numeric" min="1" value="${t&&t.life?esc(t.life):5}"><span class="hint">ระบบคิดค่าเสื่อมราคาแบบเส้นตรงให้เอง</span></div>`;
+    else if(f.nm==='accum')h+=`<div class="field"><label for="f_accum">ค่าเสื่อมราคาสะสมที่ผ่านมา (บาท)</label><input type="number" id="f_accum" inputmode="decimal" step="0.01" min="0" value="${t&&t.accum?esc(t.accum):''}"><span class="hint">ถ้าเพิ่งซื้อมา ใส่ 0</span></div>`;
+    else if(f.nm==='dr'||f.nm==='cr'){
+      const lb=f.nm==='dr'?'เดบิต (ด้านซ้าย) บัญชี':'เครดิต (ด้านขวา) บัญชี';
+      h+=`<div class="field"><label for="f_${f.nm}">${lb}</label><select id="f_${f.nm}"><option value="">— เลือก —</option>${ACCS.map(a=>`<option value="${a}" ${t&&t[f.nm]===a?'selected':''}>${a} ${esc(ACC[a].n)}</option>`).join('')}</select></div>`;
+    }
+  }
+  const note=d.k==='xfer'?'รายการนี้จะลงทั้งสมุดเงินสดและสมุดเงินฝากธนาคารให้อัตโนมัติ':'';
+  const stockHistory=p.cat==='stock_out'?`<div class="sect recent-history"><h3>ประวัติการเบิกวัตถุดิบ (แตะเพื่อแก้ไข)</h3>${recentList(S.tx.filter(x=>x.cat==='stock_out').sort((a,b)=>cmp2(b,a)),null)}</div>`:'';
+  return{title,sub:book,html:`
+  <div class="row"><span class="pill ${kind}">${esc(book)}</span>${t?'<span class="pill warn">กำลังแก้ไขรายการเดิม</span>':''}</div>
+  <p class="sub" style="margin-top:-8px">${esc(d.h)}${note?'. '+esc(note):''}</p>
+  <div class="card form two" id="theForm">${h}<div class="full err" id="f_err" role="alert"></div></div>
+  ${t?`<div><button class="btn danger sm" data-a="delTx" data-id="${t.id}">ลบรายการนี้</button></div>`:''}
+  ${stockHistory}`,
+  bar:`<button class="btn ${kind} block" data-a="saveTx" data-p="${jp(p)}">บันทึกรายการ</button>`,
+  after:()=>formAfter(p,t)};
+};
+
+/* ============ ส่วนประกอบฟอร์มเสริม (บิลหลายรายการ ต้นทุนล็อต ยอดหนี้ จำหน่ายสินทรัพย์) ============ */
+function addDays(iso,n){const d=new Date(iso+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function partyBalance(pid,acc,excl){let s=0;for(const e of E()){if(excl&&e.id===excl)continue;for(const l of e.lines)if(l.party===pid&&l.acc===acc)s+=l.dr-l.cr}return r2(ACC[acc].s==='dr'?s:-s)}
+function lnKind(){const b=$('#linesBox');return b?{kind:b.dataset.kind,priced:b.dataset.priced==='1'}:null}
+function readLn(){
+  return[...document.querySelectorAll('#lineRows .lrow')].map(r=>{
+    const g=c=>r.querySelector(c),v=c=>g(c)?g(c).value:'',n=c=>{const x=parseFloat(v(c));return isNaN(x)?0:x};
+    return{itemId:v('.l_item'),nn:v('.l_nn').trim(),nu:v('.l_nu').trim(),desc:v('.l_desc').trim(),q:n('.l_qty'),p:n('.l_price'),a:n('.l_amt'),qs:v('.l_qty'),ps:v('.l_price'),as:v('.l_amt')};
+  });
+}
+function showStock(i){
+  const k=lnKind(),r=document.querySelectorAll('#lineRows .lrow')[i];if(!k||k.priced||!r)return;
+  const id=r.querySelector('.l_item').value,it=iget(id),h=r.querySelector('.l_stock');
+  if(!it){h.textContent='';return}
+  const bq=stockCard(id).bq,q=parseFloat(r.querySelector('.l_qty').value)||0;
+  h.innerHTML='คงเหลือในทะเบียน '+esc(fq(bq))+' '+esc(it.unit)+(q>bq+1e-9?' <span class="err">· เบิกมากกว่าที่มีในทะเบียน</span>':'');
+}
+function sumLines(){
+  const k=lnKind(),am=$('#f_amount');if(!k||!k.priced||!am)return;
+  am.value=r2(readLn().reduce((s,r)=>s+r.a,0))||'';
+}
+function drawLines(rows){
+  const k=lnKind();if(!k)return;
+  const items=S.items.filter(x=>x.kind===k.kind),lb=k.kind==='goods'?'สินค้า':'วัตถุดิบ';
+  $('#lineRows').innerHTML=rows.map((l,i)=>`<div class="lrow" data-i="${i}">
+   <div class="field full"><label>${lb}รายการที่ ${i+1}</label><select class="l_item" aria-label="${lb}รายการที่ ${i+1}"><option value="">— เลือก${lb} —</option>${items.map(x=>`<option value="${x.id}" ${l.itemId===x.id?'selected':''}>${esc(x.name)} (${esc(x.unit)})</option>`).join('')}<option value="__new" ${l.itemId==='__new'?'selected':''}>+ เพิ่ม${lb}ใหม่</option></select>
+    <div class="l_newbox form two" style="margin-top:6px" ${l.itemId==='__new'?'':'hidden'}><div class="field"><label>ชื่อ${lb}</label><input type="text" class="l_nn" value="${esc(l.nn||'')}"></div><div class="field"><label>หน่วยนับ</label><input type="text" class="l_nu" value="${esc(l.nu||'')}" placeholder="เช่น กก. ถุง"></div></div>
+    <div class="field full"><label>รายละเอียดรายการ (เช่น ค่าแรง / ค่าภาชนะ)</label><input type="text" class="l_desc" value="${esc(l.desc||'')}" placeholder="ระบุชื่อรายการค่าใช้จ่าย (ไม่บังคับ)"></div><div class="hint l_stock"></div></div>
+   <div class="field"><label class="l_qty_label">จำนวน${l.itemId&&iget(l.itemId)?' ('+esc(iget(l.itemId).unit)+')':' (หน่วยนับตามที่เลือก)'}</label><input type="number" class="l_qty" inputmode="decimal" step="any" min="0" value="${esc(l.qs||'')}"></div>
+   ${k.priced?`<div class="field"><label>ราคาต่อหน่วย (บาท)</label><input type="number" class="l_price" inputmode="decimal" step="any" min="0" value="${esc(l.ps||'')}"></div><div class="field"><label>เป็นเงิน (บาท)</label><input type="number" class="l_amt" inputmode="decimal" step="0.01" min="0" value="${esc(l.as||'')}"></div>`:''}
+   <div class="field" style="justify-content:flex-end">${rows.length>1?`<button type="button" class="btn danger sm" data-a="delLine" data-i="${i}">ลบแถวนี้</button>`:''}</div></div>`).join('');
+  rows.forEach((l,i)=>showStock(i));
+  sumLines();
+}
+function initLines(t){
+  let rows;
+  if(t&&t.lines)rows=t.lines.map(l=>({itemId:l.itemId,desc:l.desc||'',qs:l.qty||'',ps:l.price||'',as:l.amount||''}));
+  else if(t&&t.itemId)rows=[{itemId:t.itemId,qs:t.qty||'',ps:t.qty?pround(t.amount/t.qty):'',as:t.amount||''}];
+  else if(t&&t.amount)rows=[{itemId:'',qs:'',ps:'',as:t.amount}];
+  else rows=[{itemId:'',qs:'',ps:'',as:''}];
+  const k=lnKind();if(k.priced&&$('#f_amount'))$('#f_amount').readOnly=true;
+  drawLines(rows);
+  const box=$('#lineRows');
+  box.addEventListener('input',ev=>{
+    const r=ev.target.closest('.lrow');if(!r)return;const c=ev.target.classList;
+    const q=r.querySelector('.l_qty'),pr=r.querySelector('.l_price'),am=r.querySelector('.l_amt');
+    const qv=parseFloat(q.value),pv=pr?parseFloat(pr.value):NaN,av=am?parseFloat(am.value):NaN;
+    if(c.contains('l_qty')||c.contains('l_price')){if(am&&qv>0&&pv>=0&&pr.value!=='')am.value=r2(qv*pv);else if(am&&c.contains('l_qty')&&qv>0&&av>0)pr.value=pround(av/qv)}
+    else if(c.contains('l_amt')){if(qv>0&&av>0)pr.value=pround(av/qv)}
+    sumLines();showStock(+r.dataset.i);
+  });
+  box.addEventListener('change',ev=>{
+    if(!ev.target.classList.contains('l_item'))return;const r=ev.target.closest('.lrow');
+    r.querySelector('.l_newbox').hidden=ev.target.value!=='__new';const it=iget(ev.target.value);if(it){const q=r.querySelector('.l_qty_label');if(q)q.textContent='จำนวน ('+it.unit+')';const pr=r.querySelector('.l_price');const am=r.querySelector('.l_amt');if(pr&&!pr.value&&(it.price||it.cost)){pr.value=it.price||it.cost;if(parseFloat(r.querySelector('.l_qty').value)>0)am.value=r2(parseFloat(r.querySelector('.l_qty').value)*parseFloat(pr.value));sumLines()}}showStock(+r.dataset.i);
+  });
+}
+const keepRows=()=>readLn().map(r=>({itemId:r.itemId,nn:r.nn,nu:r.nu,desc:r.desc,qs:r.qs,ps:r.ps,as:r.as}));
+
+/* ต้นทุนล็อตที่ผลิต */
+function lotHTML(t,v){
+  const prev=S.tx.filter(x=>x.cat==='stock_in'&&x.to&&(!t||x.id!==t.id)).map(x=>x.to).sort().pop();
+  const from=t&&t.from||(prev?addDays(prev,1):ySt(+v.date.slice(0,4))),to=t&&t.to||v.date;
+  return`<div class="field full"><div class="card" style="background:var(--surface2)"><h3 style="margin-bottom:6px">ต้นทุนของล็อตที่ผลิต</h3><p class="hint" style="margin:0 0 10px">เลือกช่วงวันที่ผลิต ระบบรวมวัตถุดิบที่เบิกใช้ ค่าแรง ค่าขนส่งเข้า และค่าใช้จ่ายการผลิตในช่วงนั้นมาให้</p><div class="form two"><div class="field"><label for="f_from">ผลิตตั้งแต่วันที่</label><input type="date" id="f_from" value="${esc(from)}"></div><div class="field"><label for="f_to">ถึงวันที่</label><input type="date" id="f_to" value="${esc(to)}"></div></div><div id="lotOut" style="margin-top:10px"></div></div></div>`;
+}
+function lotCost(from,to){
+  const raw=[];let rt=0;
+  for(const it of S.items.filter(i=>i.kind==='material')){
+    let q=0,a=0;for(const r of stockCard(it.id,to).rows)if(r.t.cat==='stock_out'&&r.date>=from&&r.date<=to){q+=r.oq;a+=r.oa}
+    if(q>0){raw.push({it,q,a:r2(a)});rt+=a}
+  }
+  const sum=f=>r2(S.tx.filter(x=>f(x)&&x.date>=from&&x.date<=to).reduce((s,x)=>s+ +x.amount,0));
+  const labor=sum(x=>x.cat==='prod_exp'&&x.sub==='labor'),other=sum(x=>x.cat==='prod_exp'&&x.sub!=='labor'),freight=sum(x=>x.cat==='freight_in');
+  rt=r2(rt);return{raw,rawT:rt,labor,other,freight,total:r2(rt+labor+other+freight)};
+}
+const LOT={dirty:false,total:0};
+function lotUnit(){
+  const h=$('#lotUnit'),q=parseFloat(($('#f_qty')||{}).value),a=parseFloat(($('#f_amount')||{}).value);
+  if(h)h.innerHTML=q>0&&a>0?'ต้นทุนต่อหน่วย <b>'+esc(fmt(a/q))+'</b> บาท':'';
+}
+function renderLot(excl){
+  const f=$('#f_from').value,to=$('#f_to').value,out=$('#lotOut');
+  if(!f||!to||f>to){out.innerHTML='<span class="err">เลือกช่วงวันที่ให้ถูกต้อง</span>';return}
+  const c=lotCost(f,to);LOT.total=c.total;
+  const rows=[...c.raw.map(r=>[ 'วัตถุดิบที่เบิกใช้: '+r.it.name+' '+fq(r.q)+' '+r.it.unit,r.a]),['ค่าขนส่งซื้อวัตถุดิบ (ขนส่งขาเข้า)',c.freight],['ค่าแรงงาน',c.labor],['ค่าใช้จ่ายในการผลิตอื่นๆ',c.other]];
+  const over=S.tx.filter(x=>x.cat==='stock_in'&&x.from&&x.id!==excl&&x.from<=to&&x.to>=f);
+  out.innerHTML=tbl([{t:'รายการต้นทุน'},{t:'บาท',n:1}],rows,['รวมต้นทุนล็อตนี้',c.total])+
+   (c.raw.length?'':'<p class="hint">ยังไม่มีการเบิกวัตถุดิบในช่วงนี้ (เมนู ทั่วไป › เบิกวัตถุดิบไปผลิต)</p>')+
+   (over.length?`<p class="err">ช่วงวันที่นี้ทับกับล็อตที่บันทึกไว้แล้ว (${esc(dshort(over[0].from))} – ${esc(dshort(over[0].to))}) ต้นทุนอาจนับซ้ำ</p>`:'')+
+   `<div class="row" style="margin-top:8px"><button type="button" class="btn sm" data-a="fill" data-t="f_amount" data-v="${c.total}">ใช้ต้นทุนนี้เป็นจำนวนเงิน</button><span id="lotUnit" class="hint"></span></div>`;
+  if(!LOT.dirty&&c.total>0)$('#f_amount').value=c.total;
+  lotUnit();
+}
+function initLot(t){
+  LOT.dirty=!!t;const excl=t&&t.id;
+  let toDirty=!!(t&&t.to&&t.to!==t.date);
+  const f=$('#f_from'),to=$('#f_to'),dt=$('#f_date'),am=$('#f_amount'),q=$('#f_qty');
+  am.addEventListener('input',()=>{LOT.dirty=true;lotUnit()});q.addEventListener('input',lotUnit);
+  dt.addEventListener('change',()=>{if(!toDirty){to.value=dt.value;renderLot(excl)}});
+  to.addEventListener('change',()=>{toDirty=true;renderLot(excl)});f.addEventListener('change',()=>renderLot(excl));
+  renderLot(excl);
+}
+/* ยอดหนี้คงเหลือ */
+function initDebt(p,t){
+  const cfg=DEBT[p.cat];if(!cfg)return;
+  const sel=$('#f_party'),ct=$('#f_ctype'),hint=$('#debtHint'),am=$('#f_amount');if(!sel||!hint)return;
+  const upd=()=>{
+    const pid=sel.value;if(!pid||pid==='__new'){hint.innerHTML='';return}
+    let acc=cfg.acc||(ct?ct.value:'2100'),bal=partyBalance(pid,acc,t&&t.id),others='';
+    if(!cfg.acc){
+      const ob=['2100','2200','2300','2400'].filter(x=>x!==acc).map(x=>[x,partyBalance(pid,x,t&&t.id)]).filter(x=>x[1]>0.004);
+      if(bal<=0.004&&ob.length===1&&ct){ct.value=ob[0][0];acc=ob[0][0];bal=ob[0][1];}
+      else if(ob.length)others=' · ยังค้างประเภทอื่น: '+ob.map(x=>esc(ACC[x[0]].n)+' '+esc(fmt(x[1]))).join(', ');
+    }
+    const a=parseFloat(am.value)||0;
+    hint.innerHTML=bal>0.004?`${esc(cfg.w)}: <b>${esc(fmt(bal))}</b> บาท <button type="button" class="btn sm" data-a="fill" data-t="f_amount" data-v="${bal}" style="margin-left:6px">${esc(cfg.btn)}</button>${others}${a>bal+0.004?'<div class="err">จำนวนเงินมากกว่ายอดที่ค้างอยู่</div>':''}`:`${esc(cfg.w)}: ไม่มียอดค้าง${others}`;
+  };
+  sel.addEventListener('change',upd);if(ct)ct.addEventListener('change',upd);am.addEventListener('input',upd);upd();
+}
+function initDispose(t){
+  const as=$('#f_asset'),dt=$('#f_date'),am=$('#f_amount'),h=$('#dispHint');
+  const upd=()=>{
+    const a=assetList().find(x=>x.id===as.value);if(!a||!dt.value){h.textContent='';return}
+    if(dt.value<a.date){h.innerHTML='<span class="err">วันที่จำหน่ายต้องไม่ก่อนวันที่ได้สินทรัพย์มา</span>';return}
+    const c=disposeCalcFor(a,dt.value,parseFloat(am.value)||0);
+    h.innerHTML='ราคาทุน '+esc(fmt(a.cost))+' · ค่าเสื่อมสะสมถึงวันที่จำหน่าย '+esc(fmt(r2(c.prior+c.fin),'0.00'))+' · มูลค่าตามบัญชี <b>'+esc(fmt(c.bv,'0.00'))+'</b> บาท'+(c.gain>0?' · <b style="color:var(--in)">กำไร '+esc(fmt(c.gain))+'</b>':c.loss>0?' · <b class="neg">ขาดทุน '+esc(fmt(c.loss))+'</b>':'');
+  };
+  [as,dt,am].forEach(e=>e.addEventListener('input',upd));as.addEventListener('change',upd);upd();
+}
+function formAfter(p,t){
+  const ps=$('#f_party'),is=$('#f_item');
+  if(ps)ps.addEventListener('change',()=>{$('#newParty').hidden=ps.value!=='__new'});
+  if(is)is.addEventListener('change',()=>{
+    $('#newItem').hidden=is.value!=='__new';
+    const it=iget(is.value),q=$('#f_qty'),pr=$('#f_price'),am=$('#f_amount');
+    const qLabel=q&&q.parentElement.querySelector('label');if(qLabel&&it)qLabel.textContent='จำนวน ('+it.unit+')';
+    if(it&&pr&&am&&['sale','buy_goods','credit_sale','credit_buy_goods'].includes(p.cat)){if(it.price>0){pr.value=it.price;if(q&&parseFloat(q.value)>0)am.value=r2(parseFloat(q.value)*it.price)}else if(q&&parseFloat(q.value)>0&&parseFloat(am.value)>0)pr.value=pround(parseFloat(am.value)/parseFloat(q.value));}
+  });
+  const newPrice=$('#f_iprice');if(newPrice)newPrice.addEventListener('input',()=>{const pr=$('#f_price'),q=$('#f_qty'),am=$('#f_amount'),pv=parseFloat(newPrice.value),qv=q?parseFloat(q.value):0;if(pr&&am&&pv>=0&&newPrice.value!==''){pr.value=pv;if(qv>0)am.value=r2(qv*pv)}});
+  const am=$('#f_amount'),pr=$('#f_price'),qe=$('#f_qty')||$('#f_pcs');
+  if(pr&&am&&qe){
+    const q=()=>parseFloat(qe.value),pp=()=>parseFloat(pr.value),a=()=>parseFloat(am.value);
+    qe.addEventListener('input',()=>{if(q()>0&&pp()>=0&&pr.value!=='')am.value=r2(q()*pp());else if(q()>0&&a()>0)pr.value=pround(a()/q())});
+    pr.addEventListener('input',()=>{if(q()>0&&pp()>=0&&pr.value!=='')am.value=r2(q()*pp())});
+    am.addEventListener('input',()=>{if(q()>0&&a()>0)pr.value=pround(a()/q())});
+  }
+  if($('#linesBox'))initLines(t);
+  if($('#f_from'))initLot(t);
+  initDebt(p,t);
+  if($('#dispHint'))initDispose(t);
+  if(am&&!t&&!qe&&!$('#linesBox')&&!$('#f_asset'))setTimeout(()=>{try{am.focus()}catch(e){}},50);
+}
+
+const DEBT={collect_debtor:{acc:'1300',btn:'รับชำระทั้งหมด',w:'ลูกหนี้ค้างชำระ'},pay_creditor:{acc:null,btn:'ชำระทั้งหมด',w:'ยอดหนี้ค้างจ่าย'},share_ret:{acc:'3100',btn:'คืนทั้งหมด',w:'ค่าหุ้นคงเหลือ'}};
+const pround=x=>String(Math.round((+x||0)*10000)/10000);
+const num=id=>{const e=$('#'+id);return e?parseFloat(e.value):NaN};
+const val=id=>{const e=$('#'+id);return e?e.value.trim():''};
+function saveTx(p){
+  const d=CD[p.cat],err=[];const o={};const old=p.id?S.tx.find(x=>x.id===p.id):null;
+  let np=null,ni=null,lineTotal=null;const nis=[];
+  for(const spec of d.f){
+    const f=parseF(spec);
+    if(f.nm==='date'){o.date=val('f_date');if(!o.date)err.push('กรุณาเลือกวันที่')}
+    else if(f.nm==='amount'){o.amount=num('f_amount');if(!(o.amount>0)&&!d.f.some(s=>s.startsWith('lines:')))err.push('กรุณาใส่จำนวนเงินที่มากกว่า 0')}
+    else if(f.nm==='amount0'){o.amount=num('f_amount');if(isNaN(o.amount))o.amount=0;if(o.amount<0)err.push('จำนวนเงินต้องไม่ติดลบ')}
+    else if(f.nm==='price'){}
+    else if(f.nm==='pcs'){o.pcs=num('f_pcs');if(!(o.pcs>=1))err.push('กรุณาใส่จำนวนชิ้นอย่างน้อย 1')}
+    else if(f.nm==='salvage'){o.salvage=num('f_salv')||0;if(o.salvage<0)err.push('มูลค่าซากต้องไม่ติดลบ')}
+    else if(f.nm==='asset'){o.assetId=val('f_asset');if(!o.assetId)err.push('กรุณาเลือกสินทรัพย์ที่จำหน่าย')}
+    else if(f.nm==='recv'){o.recv=val('f_recv')}
+    else if(f.nm==='range'){o.from=val('f_from');o.to=val('f_to');if(!o.from||!o.to)err.push('กรุณาเลือกช่วงวันที่ผลิต');else if(o.from>o.to)err.push('วันที่เริ่มผลิตต้องไม่หลังวันที่สิ้นสุด')}
+    else if(f.nm==='lines'||f.nm==='linesq'){
+      const priced=f.nm==='lines',L=[];
+      readLn().forEach((r,i)=>{
+        if(!r.itemId&&!(r.q>0)&&!(r.a>0))return;
+        const no='รายการที่ '+(i+1)+': ';let itemId=r.itemId;
+        if(itemId==='__new'){if(!r.nn){err.push(no+'กรุณาพิมพ์ชื่อวัตถุดิบ');return}const x={id:uid(),kind:f.label,name:r.nn,unit:r.nu||'หน่วย',cost:0,price:0};nis.push(x);itemId=x.id}
+        if(itemId&&!(r.q>0)){err.push(no+'กรุณาใส่จำนวน');return}
+        if(!itemId){if(!priced){err.push(no+'กรุณาเลือกวัตถุดิบ');return}if(!(r.a>0)){err.push(no+'เลือกวัตถุดิบหรือใส่จำนวนเงิน');return}}
+        if(priced&&!(r.a>0)){err.push(no+'กรุณาใส่ราคาต่อหน่วยหรือจำนวนเงิน');return}
+        L.push({itemId:itemId||'',qty:itemId?r.q:0,price:r.p||0,amount:priced?r2(r.a):0,desc:r.desc||''});
+      });
+      if(!L.length&&!err.length)err.push('กรุณาใส่อย่างน้อย 1 รายการ');
+      o.lines=L;if(priced)lineTotal=r2(L.reduce((s,l)=>s+l.amount,0));
+    }
+    else if(f.nm==='desc'){o.desc=val('f_desc');if(f.req&&!o.desc)err.push('กรุณาพิมพ์'+(f.label||'รายละเอียด'))}
+    else if(f.nm==='qty'){o.qty=num('f_qty');if(isNaN(o.qty))o.qty=0;if(f.req&&!(o.qty>0))err.push('กรุณาใส่จำนวน')}
+    else if(f.nm==='party'){const s=val('f_party');if(s==='__new'){const n=val('f_pname');if(!n)err.push('กรุณาพิมพ์ชื่อ');else np={id:uid(),type:f.ty,name:n,no:val('f_pno'),addr:val('f_paddr'),idc:val('f_pid')}}else if(s)o.partyId=s;else if(f.req)err.push('กรุณาเลือกชื่อ')}
+    else if(f.nm==='item'){const s=val('f_item');if(s==='__new'){const n=val('f_iname');if(!n)err.push('กรุณาพิมพ์ชื่อ'+(f.ty==='goods'?'สินค้า':'วัตถุดิบ'));else ni={id:uid(),kind:f.ty,name:n,unit:val('f_iunit')||'หน่วย',cost:0,price:num('f_iprice')||0}}else if(s)o.itemId=s;else if(f.req)err.push('กรุณาเลือก'+(f.ty==='goods'?'สินค้า':'วัตถุดิบ'))}
+    else if(f.nm==='ctype')o.ctype=val('f_ctype');
+    else if(f.nm==='sub')o.sub=val('f_sub');
+    else if(f.nm==='life'){o.life=num('f_life');if(!(o.life>=1))err.push('กรุณาใส่อายุการใช้งานอย่างน้อย 1 ปี')}
+    else if(f.nm==='accum'){o.accum=num('f_accum')||0;if(o.accum>(o.amount||0))err.push('ค่าเสื่อมสะสมต้องไม่เกินราคาทุน')}
+    else if(f.nm==='dr'||f.nm==='cr'){o[f.nm]=val('f_'+f.nm);if(!o[f.nm])err.push('กรุณาเลือกบัญชี'+(f.nm==='dr'?'ด้านเดบิต':'ด้านเครดิต'))}
+  }
+  if(lineTotal!==null)o.amount=lineTotal;
+  if(o.salvage>0&&o.amount>0&&o.salvage>=o.amount)err.push('มูลค่าซากต้องน้อยกว่าราคาทุน');
+  if(p.cat==='dispose_asset'){
+    const as=assetList().find(x=>x.id===o.assetId);
+    if(o.assetId&&!as)err.push('ไม่พบสินทรัพย์นี้');
+    else if(as&&o.date<as.date)err.push('วันที่จำหน่ายต้องไม่ก่อนวันที่ได้สินทรัพย์มา ('+dshort(as.date)+')');
+    else if(as&&as.dispId&&as.dispId!==(old&&old.id))err.push('สินทรัพย์นี้จำหน่ายไปแล้ว');
+    if(o.recv==='none'&&o.amount>0)err.push('ถ้ามีเงินที่ได้รับ ให้เลือกรับเข้าเงินสดหรือเงินฝากธนาคาร');
+    if(o.recv!=='none'&&!(o.amount>0))err.push('ถ้าไม่ได้รับเงิน ให้เลือก "ไม่ได้รับเงิน"');
+  }
+  if(o.dr&&o.dr===o.cr)err.push('บัญชีเดบิตและเครดิตต้องไม่ซ้ำกัน');
+  if((o.itemId||ni)&&!(o.qty>0)&&d.f.some(s=>parseF(s).nm==='qty'))err.push('เลือกสินค้า/วัตถุดิบแล้ว กรุณาใส่จำนวนด้วย');
+  if(err.length){$('#f_err').innerHTML=err.map(esc).join('<br>');$('#f_err').scrollIntoView({block:'center'});return}
+  if(np){S.parties.push(np);o.partyId=np.id}
+  nis.forEach(x=>S.items.push(x));
+  if(ni){S.items.push(ni);o.itemId=ni.id}
+  if(o.amount==null)o.amount=0;
+  let kind=d.k==='open'||d.k==='gen'?'gen':d.k,acct=(kind==='in'||kind==='out')?p.acct:null;
+  if(p.cat==='dispose_asset'){kind=o.recv==='none'?'gen':'in';acct=o.recv==='none'?null:o.recv;delete o.recv}
+  const t=Object.assign({id:old?old.id:uid(),n:old?old.n:S.seq++,kind,cat:p.cat,acct},o);
+  if(old)S.tx[S.tx.indexOf(old)]=t;else S.tx.push(t);
+  if(t.lines)for(const l of t.lines){const it=iget(l.itemId);if(it&&l.price>0){it.price=l.price;if(p.cat==='buy_raw'||p.cat==='credit_buy_raw'||p.cat==='prod_exp')it.cost=l.price;}}
+  if(['sale','buy_goods','credit_sale','credit_buy_goods'].includes(p.cat)&&t.itemId&&t.qty>0&&t.amount>0){const it=iget(t.itemId);if(it)it.price=r2(t.amount/t.qty);}
+  S.ui.lastDate=o.date;S.ui.year=+o.date.slice(0,4);
+  commit();
+  nav.pop();nav.push({s:'done',p:{id:t.id,cat:p.cat,acct:t.acct||p.acct,edited:!!old}});render();
+}
+SCR.done=p=>{
+  const t=S.tx.find(x=>x.id===p.id);if(!t)return{title:'บันทึกแล้ว',html:'<p>ไม่พบรายการ</p>'};
+  const en=E().filter(e=>e.id===t.id)[0];
+  const post=en?en.lines.map(l=>`<span class="${l.dr?'dr':'cr'}">${l.dr?'เดบิต':'เครดิต'}</span><span>${esc(ACC[l.acc].n)}${l.party?' ('+esc(pname(l.party))+')':''}</span><span class="n mono">${esc(fmt(l.dr||l.cr))}</span>`).join(''):'';
+  const kind=formKind(t.cat,p.acct),d=CD[t.cat];
+  const toBook=t.kind==='gen'?{s:'gjournal'}:{s:'book',p:{acct:t.acct||p.acct||'cash'}};
+  return{title:p.edited?'แก้ไขแล้ว':'บันทึกแล้ว',sub:d.k==='xfer'?xfLabel(t.cat,p.acct):d.t,html:`
+  <div class="banner ok"><span><b>${p.edited?'แก้ไขรายการเรียบร้อย':'บันทึกเรียบร้อย'}</b> · ${esc(dfull(t.date))} · ${esc(txDesc(t))}${t.amount?' · '+esc(fmt(t.amount))+' บาท':''}</span></div>
+  ${post?`<div class="card"><h3 style="margin-bottom:10px">ระบบลงบัญชีให้แล้ว</h3><div class="post">${post}</div><p class="hint" style="margin:10px 0 0">เดบิต = ด้านซ้าย เครดิต = ด้านขวา ของบัญชีแยกประเภท รายการนี้ถูกนำไปลงงบทดลอง ทะเบียนคุม และงบการเงินให้แล้ว</p></div>`:'<div class="card"><p style="margin:0">รายการนี้ลงทะเบียนคุมให้แล้ว (ไม่มีผลต่อเงินหรือบัญชีแยกประเภท)</p></div>'}
+  <div class="grid">
+   <button class="btn ${kind}" data-a="again" data-p="${jp({cat:t.cat,acct:p.acct})}">บันทึกรายการ${esc(d.k==='xfer'?xfLabel(t.cat,p.acct):d.t)}เพิ่ม</button>
+   <button class="btn ghost" data-a="${toBook.s==='book'?'go':'go'}" data-s="${toBook.s}" data-p="${jp(toBook.p||{})}">ดูสมุดที่เพิ่งบันทึก</button>
+   <button class="btn ghost" data-a="go" data-s="form" data-p="${jp({cat:t.cat,acct:p.acct||t.acct,id:t.id})}">กดแก้ไขข้อมูล</button>
+   <button class="btn ghost" data-a="home">กลับเมนูหลัก</button>
+  </div>`};
+};
+
+/* ---------- ปิดงวดสิ้นปี ---------- */
+function stockValue(kind,upTo){let s=0;for(const it of S.items.filter(i=>i.kind===kind)){const c=stockCard(it.id,upTo);if(c.bq>0)s+=c.ba}return r2(s)}
+SCR.closing=()=>{
+  const y=S.ui.year,c=S.closing[y]||{},sg=stockValue('goods',yEn(y)),sm=stockValue('material',yEn(y));
+  return{title:'ปิดงวดสิ้นปี',sub:'พ.ศ. '+(y+543),year:true,html:`
+  <p class="sub">ปลายปีให้นับสินค้าและวัตถุดิบที่เหลือจริง แล้วกรอกมูลค่าตามราคาทุน ระบบจะคำนวณต้นทุนขาย ต้นทุนการผลิต และกำไรให้ถูกต้อง ค่าเสื่อมราคาสินทรัพย์ระบบคิดให้อัตโนมัติแล้ว</p>
+  <div class="card form two">
+   <div class="field"><label for="c_goods">สินค้าคงเหลือปลายปี (บาท)</label><input type="number" class="amount" id="c_goods" inputmode="decimal" step="0.01" min="0" value="${c.goods??''}"><span class="hint">ตามทะเบียนคุมสินค้า: ${esc(fmt(sg,'0.00'))} บาท · <a href="#" data-a="fill" data-t="c_goods" data-v="${sg}">ใช้ค่านี้</a></span></div>
+   <div class="field"><label for="c_mat">วัตถุดิบคงเหลือปลายปี (บาท)</label><input type="number" class="amount" id="c_mat" inputmode="decimal" step="0.01" min="0" value="${c.material??''}"><span class="hint">ตามทะเบียนคุมวัตถุดิบ: ${esc(fmt(sm,'0.00'))} บาท · <a href="#" data-a="fill" data-t="c_mat" data-v="${sm}">ใช้ค่านี้</a></span></div>
+   <div class="field"><label for="c_units">จำนวนหน่วยที่ผลิตได้ทั้งปี (ถ้ามี)</label><input type="number" id="c_units" inputmode="decimal" step="any" min="0" value="${c.units??''}"><span class="hint">ใช้คำนวณต้นทุนการผลิตต่อหน่วย</span></div>
+   <div class="field"><label for="c_uname">หน่วยนับของที่ผลิต</label><input type="text" id="c_uname" value="${esc(c.uname||'')}" placeholder="เช่น ถุง กก."></div>
+  </div>
+  <p class="hint">ถ้าไม่มีสินค้าหรือวัตถุดิบเหลือ ให้ใส่ 0 · ถ้ากลุ่มไม่มีสินค้าชนิดนั้นเลย ปล่อยว่างได้</p>`,
+  bar:`<button class="btn gen block" data-a="saveClosing">บันทึกการปิดงวด</button>`};
+};
+/* ============ สมุด บัญชี ทะเบียน และงบการเงิน ============ */
+function monthlyChart(y){
+  const vals=Array.from({length:12},(_,i)=>{const st=mSt(y,i+1),en=mEn(y,i+1);let inc=0,exp=0;for(const e of E()){if(e.date<st||e.date>en)continue;for(const l of e.lines){const ty=ACC[l.acc]?.t;if(ty==='R')inc+=l.cr-l.dr;else if(ty==='X')exp+=l.dr-l.cr}}return{m:MS[i],inc:Math.max(0,r2(inc)),exp:Math.max(0,r2(exp))}});
+  const max=Math.max(1,...vals.flatMap(v=>[v.inc,v.exp]));
+  return `<div class="sect"><h3>แผนภูมิแท่งเปรียบเทียบรายได้และรายจ่ายรายเดือน</h3><div class="card"><p class="hint">ปี พ.ศ. ${y+543} · คำนวณจากบัญชีรายได้และค่าใช้จ่ายที่บันทึกไว้</p><div class="chart-legend"><span><i class="chart-dot"></i>รายได้</span><span><i class="chart-dot exp"></i>รายจ่าย</span></div><div class="chart-grid">${vals.map(v=>`<div class="chart-month"><div class="chart-bars" title="${v.m}: รายได้ ${fmt(v.inc)} บาท · รายจ่าย ${fmt(v.exp)} บาท"><div class="chart-bar" style="height:${Math.max(v.inc?2:0,v.inc/max*100)}%" aria-label="รายได้ ${fmt(v.inc)} บาท"></div><div class="chart-bar exp" style="height:${Math.max(v.exp?2:0,v.exp/max*100)}%" aria-label="รายจ่าย ${fmt(v.exp)} บาท"></div></div><div style="margin-top:5px">${v.m}</div><div style="font-size:.7rem">${fmt(v.inc, '0')} / ${fmt(v.exp,'0')}</div></div>`).join('')}</div><p class="hint">ตัวเลขใต้แต่ละเดือนแสดง รายได้ / รายจ่าย (บาท) · เลื่อนตารางกราฟในแนวนอนได้</p></div></div>`;
+}
+function printButton(){return `<div class="print-actions"><button class="btn ghost sm" type="button" data-a="printPage">พิมพ์ / บันทึกเป็น PDF</button></div>`}
+SCR.reports=()=>{
+  const G=[
+   ['สมุดบันทึกรายการ',[['book',{acct:'cash'},'สมุดเงินสด','รับ-จ่ายเงินสดทุกรายการ',IC.cash],['book',{acct:'bank'},'สมุดเงินฝากธนาคาร','รับ-จ่ายผ่านบัญชีธนาคาร',IC.bank],['gjournal',{},'สมุดรายวันทั่วไป','รายการที่ไม่ใช่เงินสด/เงินฝาก และรายการปรับปรุง',IC.book]]],
+   ['บัญชี',[['ledger',{},'บัญชีแยกประเภททั่วไป','ดูแต่ละบัญชีว่าเพิ่มลดอย่างไร',IC.book],['trial',{},'งบทดลอง','ตรวจสอบยอดเดบิต = เครดิต',IC.book]]],
+   ['ทะเบียนคุม',[['party',{type:'member'},'ทะเบียนสมาชิกและหุ้น','ค่าหุ้นของสมาชิกแต่ละคน',IC.doc],['party',{type:'debtor'},'บัญชีย่อยลูกหนี้','ใครค้างเงินกลุ่มเท่าไร',IC.doc],['party',{type:'creditor'},'บัญชีย่อยเจ้าหนี้','กลุ่มค้างจ่ายใคร เท่าไร',IC.doc],['stock',{kind:'material'},'ทะเบียนคุมวัตถุดิบ','รับ จ่าย คงเหลือ',IC.doc],['stock',{kind:'goods'},'ทะเบียนคุมสินค้า','รับ จ่าย คงเหลือ',IC.doc],['assets',{},'ทะเบียนคุมสินทรัพย์ถาวร','ราคาทุน ค่าเสื่อม ราคาสุทธิ',IC.doc]]],
+   ['ส่งออก',[['export',{},'ส่งออก Excel พร้อมพิมพ์','เลือกช่วงเวลา ตั้งหน้า A4 พร้อมหัวกระดาษ',IC.doc]]],
+   ['งบการเงิน',[['prodcost',{},'รายงานต้นทุนการผลิต','วัตถุดิบ ค่าแรง ต้นทุนต่อหน่วย',IC.book],['income',{},'สมุดบันทึกต้นทุนกำไร','รายได้ ค่าใช้จ่าย กำไร (ขาดทุน)',IC.book],['balance',{},'งบแสดงฐานะการเงิน','สินทรัพย์ หนี้สิน ทุน',IC.book]]]
+  ];
+  return{title:'สมุด บัญชี และงบการเงิน',sub:'ระบบทำให้อัตโนมัติจากรายการที่บันทึก',year:true,html:G.map(([h,l])=>`<div class="sect"><h3>${esc(h)}</h3><div class="grid">${l.map(([s,p,t,d,i])=>goT(s,p,t,d,'',i)).join('')}</div></div>`).join('')+monthlyChart(S.ui.year)};
+};
+const tabs=(key,list,cur)=>`<div class="tabs" role="group">${list.map(([k,l])=>`<button class="tab" aria-pressed="${k===cur}" data-a="tab" data-k="${key}" data-v="${k}">${esc(l)}</button>`).join('')}</div>`;
+const kpi=(k,v,neg)=>`<div class="kpi"><div class="k">${esc(k)}</div><div class="v ${neg&&v<0?'neg':''}">${esc(fmt(v,'0.00'))}</div></div>`;
+
+SCR.book=p=>{
+  const acct=p.acct,y=S.ui.year,m=S.ui.m|0,B=bookData(acct,y,m),bt=S.ui.bt||'form',bk=acct==='cash'?'สมุดเงินสด':'สมุดเงินฝากธนาคาร';
+  const ed=t=>['go',{s:'form',p:{cat:t.cat,acct,id:t.id}}];
+  let view;
+  if(bt==='form'){
+    const lblR=c=>c==='XF'?(acct==='cash'?'ถอนเงินฝาก':'นำฝาก'):c==='OT'?'อื่นๆ':RC.find(r=>r[0]===c)[1];
+    const rc=RC.map(r=>({t:lblR(r[0]),n:1}));
+    const recvRows=B.recv.sort(cmp3).map(r=>({c:[dshort(r.date),txDesc(r.t),...RC.map(c=>r.col===c[0]?r.amt:null),r.amt],act:ed(r.t)}));
+    const rcols=[{t:'วันที่',d:1},{t:'รายการ'},...rc,{t:'รวมรับ',n:1}];
+    const rfoot=['รวม','',...RC.map(c=>r2(B.recv.filter(r=>r.col===c[0]).reduce((s,r)=>s+r.amt,0))),B.tr];
+    const lblP=c=>c==='XF'?(acct==='cash'?'นำฝาก':'ถอนเงิน'):null;
+    const pcols=[{t:'วันที่',d:1},{t:'รายการ'},...PC.map(c=>({t:lblP(c[0])||c[1],n:1,grp:c[2]})),{t:'รวมจ่าย',n:1}];
+    const payRows=B.pay.sort(cmp3).map(r=>({c:[dshort(r.date),txDesc(r.t),...PC.map(c=>r.col===c[0]?r.amt:null),r.amt],act:ed(r.t)}));
+    const pfoot=['รวม','',...PC.map(c=>r2(B.pay.filter(r=>r.col===c[0]).reduce((s,r)=>s+r.amt,0))),B.tp];
+    view=`<div class="sect"><h3>ด้านรับ</h3>${tbl(rcols,recvRows,rfoot)}</div><div class="sect"><h3>ด้านจ่าย</h3>${tbl(pcols,payRows,pfoot)}</div>`;
+  }else{
+    let bal=B.carry;const rows=[{c:['','ยอดยกมา','','',bal],cls:'tot'}];
+    const all=[...B.recv.map(r=>({...r,s:1})),...B.pay.map(r=>({...r,s:-1}))].sort(cmp3);
+    for(const r of all){bal=r2(bal+r.s*r.amt);rows.push({c:[dshort(r.date),txDesc(r.t),r.s>0?r.amt:null,r.s<0?r.amt:null,bal],act:ed(r.t)})}
+    view=tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:'รับ',n:1},{t:'จ่าย',n:1},{t:'คงเหลือ',n:1}],rows,['รวม','',B.tr,B.tp,B.end]);
+  }
+  return{title:bk,sub:periodTxt(y,m),year:true,html:`
+  <div class="row">${monSel()}${tabs('bt',[['form','ตามแบบสมุด'],['chrono','เรียงตามวันที่']],bt)}</div>
+  <div class="kpis">${kpi('ยกมา',B.carry)}${kpi('รวมรับ',B.tr)}${kpi('รวมจ่าย',B.tp)}${kpi((acct==='cash'?'เงินสด':'เงินฝาก')+'คงเหลือ',B.end,1)}</div>
+  ${view}
+  <p class="hint">แตะที่แถวเพื่อแก้ไขหรือลบรายการ · ตารางกว้างเลื่อนดูไปทางขวาได้</p>
+  <div class="row"><button class="btn in" data-a="go" data-s="cats" data-p="${jp({k:'in',acct})}">+ บันทึกรับ</button><button class="btn out" data-a="go" data-s="cats" data-p="${jp({k:'out',acct})}">+ บันทึกจ่าย</button></div>`};
+};
+const cmp3=(a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.t.n||0)-(b.t.n||0);
+
+SCR.gjournal=()=>{
+  const y=S.ui.year,m=S.ui.m|0,st=mSt(y,m),en=mEn(y,m),jt=S.ui.jt||'journal';
+  let view;
+  if(jt==='journal'){
+    const rows=[];
+    for(const e of E()){if(e.src!=='gen'&&e.src!=='adj')continue;if(e.date<st||e.date>en)continue;
+      rows.push({c:[dshort(e.date),{h:'<b>'+esc(e.desc)+'</b>'},'',''],act:e.tx?['go',{s:'form',p:{cat:e.tx.cat,id:e.tx.id}}]:null,cls:''});
+      for(const l of e.lines)rows.push([ '',{h:'<span style="padding-left:'+(l.dr?'0':'22px')+'">'+esc(ACC[l.acc].n)+(l.party?' ('+esc(pname(l.party))+')':'')+'</span>'},l.dr||null,l.cr||null]);
+    }
+    view=tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:'เดบิต',n:1},{t:'เครดิต',n:1}],rows);
+  }else{
+    const cats=['credit_sale','credit_buy_goods','credit_buy_raw','BI'];
+    const L=[];for(const t of S.tx){if(t.date<st||t.date>en)continue;if(['credit_sale','credit_buy_goods','credit_buy_raw'].includes(t.cat))L.push({t,col:t.cat});else if(t.cat==='interest'&&t.acct==='bank')L.push({t,col:'BI'})}
+    L.sort((a,b)=>cmp2(a.t,b.t));
+    const rows=L.map(r=>({c:[dshort(r.t.date),txDesc(r.t),...cats.map(c=>c===r.col?+r.t.amount:null)],act:['go',{s:'form',p:{cat:r.t.cat,acct:r.t.acct,id:r.t.id}}]}));
+    const foot=['รวม','',...cats.map(c=>r2(L.filter(r=>r.col===c).reduce((s,r)=>s+ +r.t.amount,0)))];
+    view=tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:'ขายสินค้าเงินเชื่อ',n:1},{t:'ซื้อสินค้าเงินเชื่อ',n:1},{t:'ซื้อวัตถุดิบเงินเชื่อ',n:1},{t:'ดอกเบี้ยเงินฝากธนาคาร',n:1}],rows,foot);
+  }
+  return{title:'สมุดรายวันทั่วไป',sub:periodTxt(y,m),year:true,html:`<div class="row">${monSel()}${tabs('jt',[['journal','สมุดรายวันทั่วไป'],['log','สมุดบันทึกรายการทั่วไป']],jt)}</div>${view}
+  <div><button class="btn gen" data-a="go" data-s="gen">+ บันทึกรายการทั่วไป</button></div>`};
+};
+
+SCR.ledger=()=>{
+  const y=S.ui.year,m=S.ui.m|0,a=S.ui.acc&&ACC[S.ui.acc]?S.ui.acc:'1100',D=ledgerData(a,y,m),side=ACC[a].s;
+  let bal=D.cd-D.cc;const bcols=r=>[bal>0?bal:null,bal<0?-bal:null];
+  const rows=[{c:['','ยอดยกมา','','',...bcols()],cls:'tot'}];
+  for(const r of D.rows){bal=r2(bal+r.dr-r.cr);rows.push({c:[dshort(r.date),r.desc,r.dr||null,r.cr||null,...bcols()],act:r.t?['go',{s:'form',p:{cat:r.t.cat,acct:r.t.acct,id:r.t.id}}]:null})}
+  const td=r2(D.rows.reduce((s,r)=>s+r.dr,0)),tc=r2(D.rows.reduce((s,r)=>s+r.cr,0));
+  const groups=[['สินทรัพย์','A'],['หนี้สิน','L'],['ทุน','E'],['รายได้','R'],['ค่าใช้จ่าย','X']];
+  return{title:'บัญชีแยกประเภททั่วไป',sub:ACC[a].n+' · '+periodTxt(y,m),year:true,html:`
+  <div class="row"><select id="accSel" aria-label="เลือกบัญชี" style="flex:1;min-width:200px">${groups.map(([g,t])=>`<optgroup label="${g}">${ACCS.filter(x=>ACC[x].t===t).map(x=>`<option value="${x}" ${x===a?'selected':''}>${x} ${esc(ACC[x].n)}</option>`).join('')}</optgroup>`).join('')}</select>${monSel()}</div>
+  <p class="hint">บัญชี${esc(ACC[a].n)} ปกติมียอดคงเหลือด้าน${side==='dr'?'ซ้าย (เดบิต)':'ขวา (เครดิต)'}${isBS(a)?'':' · บัญชีรายได้/ค่าใช้จ่ายเริ่มนับใหม่ทุกปี'}</p>
+  ${tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:'จำนวนเงิน ด้านซ้าย (เดบิต)',n:1},{t:'จำนวนเงิน ด้านขวา (เครดิต)',n:1},{t:'คงเหลือ ด้านซ้าย',n:1},{t:'คงเหลือ ด้านขวา',n:1}],rows,['รวมช่วงนี้','',td,tc,'',''])}`};
+};
+SCR.trial=()=>{
+  const y=S.ui.year,m=S.ui.m|0,T=trialBalance(y,m),ok=Math.abs(T.td-T.tc)<0.01;
+  return{title:'งบทดลอง',sub:'ณ สิ้น'+(m?'เดือน'+MF[m-1]:'ปี')+' พ.ศ. '+(y+543),year:true,html:`
+  <div class="row">${monSel()}</div>
+  <div class="banner ${ok?'ok':''}"><span>${ok?'<b>ยอดสองด้านเท่ากัน</b> บัญชีถูกต้องตามหลักบัญชีคู่':'<b>ยอดสองด้านไม่เท่ากัน</b> กรุณาตรวจสอบรายการ'}</span></div>
+  ${tbl([{t:'เลขที่'},{t:'ชื่อบัญชี'},{t:'เดบิต',n:1},{t:'เครดิต',n:1}],T.rows.map(r=>({c:[r.a,r.n,r.dr||null,r.cr||null],act:r.a==='3300'?null:['tab',{k:'acc',v:r.a,open:'ledger'}]})),['','รวม',T.td,T.tc])}
+  <p class="hint">แตะแถวเพื่อเปิดดูบัญชีแยกประเภทของบัญชีนั้น</p>`};
+};
+
+/* ---------- ทะเบียนคุม ---------- */
+const PT={member:{t:'ทะเบียนสมาชิกและหุ้น',n:'สมาชิก',inc:'เพิ่มหุ้น',dec:'จ่ายคืน',bal:'ค่าหุ้นคงเหลือ',cat:'share'},debtor:{t:'บัญชีย่อยลูกหนี้',n:'ลูกหนี้',inc:'เพิ่ม',dec:'จ่ายคืน',bal:'ยอดหนี้คงเหลือ',cat:'collect_debtor'},creditor:{t:'บัญชีย่อยเจ้าหนี้',n:'เจ้าหนี้',inc:'หนี้เพิ่ม',dec:'จ่ายคืน',bal:'ยอดหนี้คงเหลือ',cat:'loan_in'}};
+SCR.party=p=>{
+  const ty=p.type,T=PT[ty],L=S.parties.filter(x=>x.type===ty);
+  S.ui.pid=S.ui.pid||{};let cur=L.find(x=>x.id===S.ui.pid[ty])||L[0];
+  const y=S.ui.year;
+  const sum=L.map(x=>({x,c:partyCard(x)}));
+  let det='';
+  if(cur){
+    const c=sum.find(s=>s.x.id===cur.id).c;
+    const rows=c.rows.filter(r=>r.date<=yEn(y)).map(r=>({c:[dshort(r.date),r.desc,r.inc||null,r.dec||null,...(ty==='creditor'?[r.int||null]:[]),r.bal],act:r.t?['go',{s:'form',p:{cat:r.t.cat,acct:r.t.acct,id:r.t.id}}]:null}));
+    const last=c.rows.filter(r=>r.date<=yEn(y));const bal=last.length?last[last.length-1].bal:0;
+    det=`<div class="card"><div class="row" style="justify-content:space-between"><div><h3>${esc(cur.name)}</h3><div class="hint">${cur.no?'เลขทะเบียนสมาชิก '+esc(cur.no)+' · ':''}${cur.idc?'เลขบัตร '+esc(cur.idc)+' · ':''}${esc(cur.addr||'')}</div></div><button class="btn ghost sm" data-a="go" data-s="edparty" data-p="${jp({id:cur.id})}">แก้ไขข้อมูล</button></div></div>
+    ${tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:T.inc,n:1},{t:T.dec,n:1},...(ty==='creditor'?[{t:'ดอกเบี้ย',n:1}]:[]),{t:T.bal,n:1}],rows,['รวม','',r2(last.reduce((s,r)=>s+r.inc,0)),r2(last.reduce((s,r)=>s+r.dec,0)),...(ty==='creditor'?[r2(last.reduce((s,r)=>s+r.int,0))]:[]),bal])}`;
+  }
+  const tot=r2(sum.reduce((s,x)=>s+x.c.bal,0));
+  return{title:T.t,sub:'ณ สิ้นปี พ.ศ. '+(y+543),year:true,html:L.length?`
+  <div class="sect"><h3>${T.n}ทั้งหมด (แตะชื่อเพื่อดูรายละเอียด)</h3>${tbl([{t:'ชื่อ'},{t:T.bal,n:1}],sum.map(s=>{const bb=partyCard(s.x).rows.filter(r=>r.date<=yEn(y));return{c:[s.x.name+(s.x.id===cur.id?'  ◂':''),bb.length?bb[bb.length-1].bal:0],act:['selParty',{ty,id:s.x.id}]}}),['รวม',tot])}</div>${det}`:
+  `<div class="card empty"><p>ยังไม่มี${T.n}</p><p class="hint">ชื่อจะถูกเพิ่มอัตโนมัติเมื่อคุณบันทึกรายการที่เกี่ยวข้อง หรือเพิ่มทันทีในหน้าบันทึกรายการ</p><button class="btn" data-a="go" data-s="${ty==='member'?'form':'form'}" data-p="${jp(ty==='member'?{cat:'share',acct:'cash'}:ty==='debtor'?{cat:'credit_sale'}:{cat:'loan_in',acct:'cash'})}">บันทึก${ty==='member'?'ค่าหุ้น':ty==='debtor'?'ขายเชื่อ':'เงินกู้/เงินรับฝาก'}</button></div>`};
+};
+SCR.edparty=p=>{
+  const x=S.parties.find(q=>q.id===p.id);if(!x)return{title:'ไม่พบข้อมูล',html:''};
+  return{title:'แก้ไขข้อมูล'+PT[x.type].n,html:`<div class="card form two">
+  <div class="field"><label for="e_name">ชื่อ-นามสกุล</label><input type="text" id="e_name" value="${esc(x.name)}"></div>
+  ${x.type==='member'?`<div class="field"><label for="e_no">เลขทะเบียนสมาชิก</label><input type="text" id="e_no" value="${esc(x.no||'')}"></div>`:''}
+  <div class="field"><label for="e_idc">เลขบัตรประชาชน</label><input type="text" id="e_idc" inputmode="numeric" value="${esc(x.idc||'')}"></div>
+  <div class="field full"><label for="e_addr">ที่อยู่</label><input type="text" id="e_addr" value="${esc(x.addr||'')}"></div><div class="full err" id="f_err"></div></div>
+  <div><button class="btn danger sm" data-a="delParty" data-id="${x.id}">ลบรายชื่อนี้</button></div>`,
+  bar:`<button class="btn block" data-a="saveParty" data-id="${x.id}">บันทึก</button>`};
+};
+SCR.stock=p=>{
+  const kd=p.kind,lb=kd==='goods'?'สินค้า':'วัตถุดิบ',L=S.items.filter(i=>i.kind===kd),y=S.ui.year;
+  S.ui.sid=S.ui.sid||{};const cur=L.find(i=>i.id===S.ui.sid[kd])||L[0];
+  if(!cur)return{title:'ทะเบียนคุม'+lb,html:`<div class="card empty"><p>ยังไม่มี${lb}ในทะเบียน</p><p class="hint">เมื่อบันทึก${kd==='goods'?'ซื้อสินค้า ขายสินค้า':'ซื้อวัตถุดิบ'} ให้เลือกหรือเพิ่มชื่อ${lb}และใส่จำนวน ระบบจะลงทะเบียนคุมให้เอง</p></div>`};
+  const c=stockCard(cur.id,yEn(y)),rows=c.rows.map(r=>({c:[dshort(r.date),r.desc,r.iq??null,r.ip??null,r.ia??null,r.oq??null,r.op??null,r.oa??null,fq(r.bq),r.bp,r.ba],act:['go',{s:'form',p:{cat:r.t.cat,acct:r.t.acct,id:r.t.id}}]}));
+  const avg=c.bq>0?c.ba/c.bq:0;
+  return{title:'ทะเบียนคุม'+lb,sub:'ณ สิ้นปี พ.ศ. '+(y+543),year:true,html:`
+  <div class="row"><select id="itemSel" aria-label="เลือก${lb}" style="flex:1;min-width:200px">${L.map(i=>`<option value="${i.id}" ${i.id===cur.id?'selected':''}>${esc(i.name)}</option>`).join('')}</select><button class="btn ghost sm" data-a="go" data-s="editem" data-p="${jp({id:cur.id})}">แก้ไขข้อมูล${lb}</button></div>
+  <div class="kpis"><div class="kpi"><div class="k">หน่วยนับ</div><div class="v">${esc(cur.unit)}</div></div><div class="kpi"><div class="k">ราคาทุนเฉลี่ยต่อหน่วย</div><div class="v">${esc(fmt(avg,'0.00'))}</div></div><div class="kpi"><div class="k">ราคาขายต่อหน่วย</div><div class="v">${esc(fmt(cur.price,'0.00'))}</div></div><div class="kpi"><div class="k">คงเหลือ (${esc(cur.unit)})</div><div class="v ${c.bq<0?'neg':''}">${esc(fq(c.bq))}</div></div></div>
+  ${tbl([{t:'วันที่',d:1},{t:'รายการ'},{t:'รับ ปริมาณ',n:1},{t:'รับ ราคา/หน่วย',n:1},{t:'รับ จำนวนเงิน',n:1},{t:'จ่าย ปริมาณ',n:1},{t:'จ่าย ราคา/หน่วย',n:1},{t:'จ่าย จำนวนเงิน',n:1},{t:'คงเหลือ ปริมาณ',n:1},{t:'คงเหลือ ราคา/หน่วย',n:1},{t:'คงเหลือ จำนวนเงิน',n:1}],rows)}
+  <p class="hint">ราคาที่จ่ายออกคิดตามราคาทุนถัวเฉลี่ย · ปริมาณที่รับไม่ใช่ตัวเลขเงิน จึงแสดงโดยไม่มีเครื่องหมายจุลภาคทศนิยมของเงิน</p>`};
+};
+SCR.editem=p=>{
+  const x=iget(p.id);if(!x)return{title:'ไม่พบข้อมูล',html:''};
+  return{title:'แก้ไขข้อมูล'+(x.kind==='goods'?'สินค้า':'วัตถุดิบ'),html:`<div class="card form two">
+  <div class="field"><label for="e_name">ชื่อ</label><input type="text" id="e_name" value="${esc(x.name)}"></div>
+  <div class="field"><label for="e_unit">หน่วยนับ</label><input type="text" id="e_unit" value="${esc(x.unit)}"></div>
+  <div class="field"><label for="e_price">ราคาขายต่อหน่วย (บาท)</label><input type="number" id="e_price" inputmode="decimal" step="0.01" value="${x.price||''}"></div><div class="full err" id="f_err"></div></div>
+  <div><button class="btn danger sm" data-a="delItem" data-id="${x.id}">ลบรายการนี้</button></div>`,
+  bar:`<button class="btn block" data-a="saveItem" data-id="${x.id}">บันทึก</button>`};
+};
+function assetRow(a,y){
+  const sc=depSchedule(a,maxYear()),cur=sc.find(s=>s.y===y),acc=r2(a.accum+sc.filter(s=>s.y<=y).reduce((s,x)=>s+x.amt,0));
+  return{a,dep:cur?cur.amt:0,acc,net:r2(a.cost-acc),unit:r2(a.cost/(a.pcs||1))};
+}
+/* สินทรัพย์ที่ยังใช้งาน ณ สิ้นปี y และที่จำหน่ายในปี y */
+function assetsAt(y){
+  const act=[],gone=[];
+  for(const a of assetList()){
+    if(+a.date.slice(0,4)>y)continue;
+    const dy=a.disp?+a.disp.slice(0,4):null;
+    if(dy!==null&&dy<y)continue;
+    if(dy===y)gone.push(assetRow(a,y));else act.push(assetRow(a,y));
+  }
+  return{act,gone};
+}
+SCR.assets=()=>{
+  const y=S.ui.year,{act,gone}=assetsAt(y);
+  const edit=a=>{const x=S.tx.find(q=>q.id===a.id);return['go',{s:'form',p:{cat:x.cat,acct:x.acct||'cash',id:x.id}}]};
+  const rows=act.map(r=>({c:[r.a.name,dshort(r.a.acq),r.a.pcs,r.unit,r.a.life,r.a.cost,r.a.salvage,r.dep,r.acc,r.net],act:edit(r.a)}));
+  const tot=k=>r2(act.reduce((s,r)=>s+(+r.c?0:0),0));
+  const sm=f=>r2(act.reduce((s,r)=>s+f(r),0));
+  const grows=gone.map(r=>{const x=S.tx.find(q=>q.id===r.a.dispId),c=disposeCalcFor(r.a,x.date,x.amount),gl=r2(c.gain-c.loss);
+    return{c:[r.a.name,dshort(x.date),r.a.pcs,r.a.cost,r2(c.prior+c.fin),c.bv,r2(+x.amount),gl],act:['go',{s:'form',p:{cat:'dispose_asset',acct:x.acct,id:x.id}}]}});
+  return{title:'ทะเบียนคุมสินทรัพย์ถาวร',sub:'ณ สิ้นปี พ.ศ. '+(y+543),year:true,html:`
+  <p class="sub">ค่าเสื่อมราคาคิดแบบเส้นตรง ((ราคาทุน − มูลค่าซาก) ÷ อายุการใช้งาน) ปีที่ซื้อและปีที่จำหน่ายคิดตามจำนวนเดือนที่ใช้งาน ระบบลงบัญชีให้ทุกสิ้นปีเอง</p>
+  ${tbl([{t:'ชื่อสินทรัพย์'},{t:'วันที่ได้มา',d:1},{t:'จำนวน (ชิ้น)',n:1},{t:'ราคาต่อชิ้น',n:1},{t:'อายุ (ปี)',n:1},{t:'ราคาทุนรวม',n:1},{t:'มูลค่าซาก',n:1},{t:'ค่าเสื่อมราคาปีนี้',n:1},{t:'ค่าเสื่อมราคาสะสม',n:1},{t:'ราคาสุทธิ',n:1}],rows.map(r=>({...r,c:r.c.map((v,i)=>i===2||i===4?{h:esc(v)}:v)})),act.length?['รวม','',act.reduce((s,r)=>s+r.a.pcs,0),'','',sm(r=>r.a.cost),sm(r=>r.a.salvage),sm(r=>r.dep),sm(r=>r.acc),sm(r=>r.net)]:null)}
+  ${gone.length?`<div class="sect"><h3>สินทรัพย์ที่จำหน่ายในปีนี้ (แตะเพื่อแก้ไข)</h3>${tbl([{t:'ชื่อสินทรัพย์'},{t:'วันที่จำหน่าย',d:1},{t:'จำนวน (ชิ้น)',n:1},{t:'ราคาทุนรวม',n:1},{t:'ค่าเสื่อมสะสม',n:1},{t:'มูลค่าตามบัญชี',n:1},{t:'เงินที่ได้รับ',n:1},{t:'กำไร (ขาดทุน)',n:1}],grows.map(r=>({...r,c:r.c.map((v,i)=>i===2?{h:esc(v)}:v)})))}</div>`:''}
+  <div class="row"><button class="btn out" data-a="go" data-s="form" data-p="${jp({cat:'buy_asset',acct:'cash'})}">+ ซื้อสินทรัพย์</button><button class="btn ghost" data-a="go" data-s="form" data-p="${jp({cat:'open_asset'})}">+ สินทรัพย์ยกมา</button><button class="btn in" data-a="go" data-s="form" data-p="${jp({cat:'dispose_asset'})}">จำหน่ายสินทรัพย์</button></div>`};
+};
+
+/* ---------- งบการเงิน ---------- */
+const closeBanner=y=>{
+  const c=S.closing[y];const has=S.tx.some(t=>t.date.startsWith(y)&&['buy_goods','buy_raw','credit_buy_goods','credit_buy_raw'].includes(t.cat))||stockValue('goods',yEn(y))>0||stockValue('material',yEn(y))>0;
+  if(c||!has)return'';
+  return`<div class="banner"><span>ยังไม่ได้บันทึกสินค้า/วัตถุดิบคงเหลือปลายปี กำไรอาจคลาดเคลื่อน</span><button class="btn sm" data-a="go" data-s="closing">ไปปิดงวด</button></div>`};
+const head3=()=>`<div class="card" style="text-align:center"><h3>${esc(S.org.name)}</h3></div>`;
+function incomeRows(I){
+  return [{k:'head',t:'รายได้'},...I.rev.map(r=>({k:'sub',t:r[0],a:r[1]})),{k:'tot',t:'รวมรายได้',b:I.totRev},
+   {k:'head',t:'ค่าใช้จ่าย'},
+   {t:'ต้นทุนการผลิต',k:'head'},{k:'sub',t:'วัตถุดิบใช้ไป (ต้นงวด + ซื้อ − ปลายงวด)',a:I.rawUsed},{k:'sub',t:'ค่าขนส่งซื้อวัตถุดิบ (ขนส่งขาเข้า)',a:I.freightIn},{k:'sub',t:'ค่าใช้จ่ายในการผลิต',a:I.prodExp},{k:'tot',t:'รวมต้นทุนการผลิต',b:I.prod},
+   {t:'ต้นทุนขาย',k:'head'},{k:'sub',t:'บวก สินค้าคงเหลือต้นงวด',a:I.gOpen},{k:'sub',t:'ซื้อสินค้า',a:I.gBuy},{k:'sub',t:'ค่าใช้จ่ายในการซื้อ',a:I.gExp},{k:'sub',t:'หัก สินค้าคงเหลือสิ้นงวด',a:-I.gClose},{k:'tot',t:'ต้นทุนสินค้าที่ขาย',b:I.cogs},
+   {t:'ต้นทุนบริการ',k:'head'},{k:'sub',t:'ดอกเบี้ยจ่าย',a:I.int},{k:'sub',t:'ค่าแรงงาน + ค่าน้ำมัน (อื่นๆ)',a:I.svo},{k:'tot',t:'รวมต้นทุนบริการ',b:I.svc},
+   {k:'tot',t:'รวมต้นทุนขายและบริการ',b:r2(I.prod+I.cogs+I.svc)},
+   {k:'sub',t:'บวก ค่าใช้จ่ายในการดำเนินงาน',a:I.opx},{k:'sub',t:'ค่าเสื่อมราคา',a:I.dep},{k:'sub',t:'ขาดทุนจากการจำหน่ายสินทรัพย์',a:I.loss},
+   {k:'tot',t:'รวมค่าใช้จ่าย',b:I.totExp},{k:'grand',t:I.profit>=0?'กำไรสุทธิ':'ขาดทุนสุทธิ',b:I.profit}];
+}
+SCR.income=()=>{
+  const y=S.ui.year,I=incomeStmt(y),rows=incomeRows(I);
+  return{title:'สมุดบันทึกต้นทุนกำไร',sub:'สำหรับงวด 1 ม.ค. – 31 ธ.ค. '+(y+543),year:true,html:`${printButton()}${closeBanner(y)}${head3()}${stmt(rows)}`};
+};
+function balanceRows(B){
+  return [{k:'head',t:'สินทรัพย์'},...B.A.map(r=>({k:'sub',t:r[0],a:r[1]})),{k:'sub',t:'สินทรัพย์ถาวร (ราคาทุน)',a:B.cost},{k:'sub',t:'หัก ค่าเสื่อมราคาสะสม',a:-B.acc},{k:'sub',t:'สินทรัพย์ถาวร (สุทธิ)',a:B.net},{k:'grand',t:'รวมสินทรัพย์',b:B.totA},
+   {k:'head',t:'หนี้สิน'},...B.Ls.map(r=>({k:'sub',t:r[0],a:r[1]})),{k:'tot',t:'รวมหนี้สิน',b:B.totL},
+   {k:'head',t:'ทุน'},{k:'sub',t:'ทุน - ค่าหุ้น',a:B.sh},{k:'sub',t:'ทุนสะสม / กำไรสะสมยกมา',a:B.ret},{k:'sub',t:'กำไร (ขาดทุน) สุทธิปีนี้',a:B.cur},{k:'tot',t:'รวมทุน',b:B.totE},
+   {k:'grand',t:'รวมหนี้สินและทุน',b:B.tot}];
+}
+SCR.balance=()=>{
+  const y=S.ui.year,B=balanceSheet(y),rows=balanceRows(B);
+  return{title:'งบแสดงฐานะการเงิน',sub:'ณ วันที่ 31 ธ.ค. '+(y+543),year:true,html:`${printButton()}${closeBanner(y)}${head3()}<div class="banner ${B.ok?'ok':''}"><span>${B.ok?'<b>สินทรัพย์เท่ากับหนี้สินรวมทุน</b> งบสมดุล':'<b>งบไม่สมดุล</b> กรุณาตรวจสอบรายการ'}</span></div>${stmt(rows)}`};
+};
+function prodCostData(f,t){
+  const y=+t.slice(0,4),c=t===yEn(y)?(S.closing[y]||{}):{};
+  const rawOpen=carried('1500',f,t),rawClose=+c.material||0,inR=x=>x.date>=f&&x.date<=t;
+  const buys=S.tx.filter(x=>(x.cat==='buy_raw'||x.cat==='credit_buy_raw')&&inR(x)).sort(cmp2);
+  const fr=S.tx.filter(x=>x.cat==='freight_in'&&inR(x)).sort(cmp2);
+  const pe=S.tx.filter(x=>x.cat==='prod_exp'&&inR(x)).sort(cmp2);
+  const sumA=l=>r2(l.reduce((s,x)=>s+ +x.amount,0));
+  const lab=pe.filter(x=>x.sub==='labor'),ot=pe.filter(x=>x.sub!=='labor');
+  const buyT=sumA(buys),frT=sumA(fr),tot=r2(rawOpen+buyT+frT),used=r2(tot-rawClose),labT=sumA(lab),otT=sumA(ot),cost=r2(used+labT+otT);
+  const units=+c.units||0;
+  const bl=[];
+  for(const x of buys){
+    const base=x.desc||'ซื้อวัตถุดิบ';
+    if(x.lines&&x.lines.length)x.lines.forEach(l=>{const it=iget(l.itemId);bl.push({k:'sub',t:'   '+base+(it&&l.qty?' — '+it.name+' '+fq(l.qty)+' '+it.unit+' @ '+fmt(l.amount/l.qty):''),a:+l.amount})});
+    else{const it=iget(x.itemId);bl.push({k:'sub',t:'   '+base+(it&&x.qty?' ('+fq(x.qty)+' '+it.unit+' @ '+fmt(x.amount/x.qty)+')':''),a:+x.amount})}
+  }
+  const rows=[{k:'head',t:'วัตถุดิบ'},{k:'sub',t:'วัตถุดิบคงเหลือต้นงวด',a:rawOpen},{k:'sub',t:'บวก ซื้อวัตถุดิบ'},...bl,{k:'sub',t:'รวมซื้อวัตถุดิบ',a:buyT},
+   {k:'sub',t:'บวก ค่าขนส่งซื้อวัตถุดิบ (ขนส่งขาเข้า)'},...fr.map(x=>({k:'sub',t:'   '+(x.desc||'ค่าขนส่งซื้อวัตถุดิบ'),a:+x.amount})),{k:'sub',t:'รวมค่าขนส่งขาเข้า',a:frT},{k:'tot',t:'รวมวัตถุดิบ',b:tot},
+   {k:'sub',t:'หัก วัตถุดิบคงเหลือสิ้นงวด',a:-rawClose},{k:'tot',t:'วัตถุดิบใช้ไป',b:used},
+   {k:'head',t:'ค่าแรงงาน'},...lab.map(x=>({k:'sub',t:x.desc||'ค่าแรงงาน',a:+x.amount})),{k:'tot',t:'รวมค่าแรงงาน',b:labT},
+   {k:'head',t:'ค่าใช้จ่ายในการผลิต'},...ot.map(x=>({k:'sub',t:x.desc||'ค่าใช้จ่ายในการผลิต',a:+x.amount})),{k:'tot',t:'รวมค่าใช้จ่ายในการผลิต',b:otT},
+   {k:'grand',t:'ต้นทุนการผลิต',b:cost},{k:'sub',t:'จำนวนหน่วยที่ผลิตได้'+(c.uname?' ('+c.uname+')':''),a:units||null},{k:'grand',t:'ต้นทุนการผลิตต่อหน่วย',b:units?r2(cost/units):0}];
+  return{rows,cost,units,closed:t===yEn(y)&&!!S.closing[y]};
+}
+SCR.prodcost=()=>{
+  const y=S.ui.year,D=prodCostData(ySt(y),yEn(y));
+  return{title:'รายงานต้นทุนการผลิต',sub:'ปี พ.ศ. '+(y+543),year:true,html:`${printButton()}${closeBanner(y)}${head3()}${stmt(D.rows)}${D.units?'':'<p class="hint">ใส่จำนวนหน่วยที่ผลิตได้ในเมนู ทั่วไป › ปิดงวดสิ้นปี เพื่อดูต้นทุนต่อหน่วย</p>'}<p class="hint">ค่าขนส่งซื้อวัตถุดิบ (ขนส่งขาเข้า) นับรวมเป็นต้นทุนการผลิต · ค่าแรงตัวเองที่ไม่ได้จ่ายเป็นเงินจริง ถ้าต้องการนับเป็นต้นทุนให้ลงเป็นรายการ ค่าใช้จ่ายในการผลิต ประเภทค่าแรงงาน</p>`};
+};
+/* ============ ตั้งค่า สำรองข้อมูล ส่งออก ============ */
+let pendingRestore=null,dlCap=null;
+SCR.settings=()=>{
+  const o=S.org;
+  return{title:'ข้อมูลกลุ่มและการสำรองข้อมูล',html:`
+  ${demoBanner()}
+  <div class="card"><div class="row" style="justify-content:space-between"><div><h3>${esc(o.name||'-')}</h3><div class="hint">${esc(o.kind)} ${o.regno?'· ทะเบียน '+esc(o.regno):''}<br>${esc(o.address)} ${esc(o.phone)}<br>ประธาน ${esc(o.president||'-')} · ผู้จัดทำบัญชี ${esc(o.bookkeeper||'-')}</div></div><button class="btn ghost sm" data-a="go" data-s="setup">แก้ไข</button></div></div>
+  <div class="card sect"><h3>สำรองข้อมูลและย้ายเครื่อง</h3>
+   <p class="sub">ข้อมูลบัญชีเก็บไว้ในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าจะใช้ทั้งโทรศัพท์และคอมพิวเตอร์ ให้บันทึกไฟล์สำรองจากเครื่องหนึ่ง แล้วนำเข้าอีกเครื่อง และควรสำรองข้อมูลเป็นประจำ</p>
+   <div class="row"><button class="btn" data-a="backup">บันทึกไฟล์สำรองข้อมูล</button><button class="btn" data-a="go" data-s="export">ส่งออก Excel พร้อมพิมพ์</button></div>
+   <div class="field"><label for="restoreFile">นำเข้าไฟล์สำรองข้อมูล (.json)</label><input type="file" id="restoreFile" accept=".json,application/json"></div>
+   ${pendingRestore?`<div class="banner"><span>พบไฟล์สำรอง: ${esc(pendingRestore.org.name||'-')} · ${pendingRestore.tx.length} รายการ ต้องการแทนที่ข้อมูลในเครื่องนี้หรือไม่</span><span class="row"><button class="btn sm" data-a="doRestore">แทนที่ข้อมูล</button><button class="btn ghost sm" data-a="cancelRestore">ยกเลิก</button></span></div>`:''}
+   <div id="bkText"></div>
+  </div>
+  <div class="card sect"><h3>รายชื่อและสินค้า</h3>
+   <p class="sub">แตะเพื่อแก้ไขชื่อ ที่อยู่ หรือราคาขาย</p>
+   ${S.parties.length||S.items.length?tbl([{t:'ชื่อ'},{t:'ประเภท'}],[...S.parties.map(x=>({c:[x.name,PT[x.type].n],act:['go',{s:'edparty',p:{id:x.id}}]})),...S.items.map(x=>({c:[x.name,x.kind==='goods'?'สินค้า':'วัตถุดิบ'],act:['go',{s:'editem',p:{id:x.id}}]}))]):'<div class="empty">ยังไม่มีรายชื่อ</div>'}
+  </div>
+  <div class="card sect"><h3>เริ่มใหม่</h3>
+   <div class="row"><button class="btn ghost" data-a="loadDemo">ดูข้อมูลตัวอย่าง</button><button class="btn danger" data-a="resetAll">ลบข้อมูลทั้งหมดในเครื่องนี้</button></div>
+   <p class="hint">การลบข้อมูลย้อนกลับไม่ได้ แนะนำให้สำรองข้อมูลก่อน</p>
+  </div>`,after:()=>{const f=$('#restoreFile');if(f)f.onchange=()=>{const file=f.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||o.v!==1||!Array.isArray(o.tx)||!o.org)throw 0;pendingRestore=o;render()}catch(e){toast('ไฟล์นี้ไม่ใช่ไฟล์สำรองของสมุดบัญชี')}};r.readAsText(file)}}};
+};
+SCR.edparty0=null;
+
+/* ---------- ข้อมูลตัวอย่าง ---------- */
+function loadDemo(){
+  const Y=thisYear();S=blank();S.setup=true;S.ui.year=Y;
+  S.org=Object.assign(S.org,{name:'วิสาหกิจชุมชนแปรรูปกล้วยตาก บ้านสวนใหม่ (ตัวอย่าง)',kind:'แปรรูปอาหาร',address:'หมู่ 5 ต.สวนใหม่ อ.เมือง จ.ตัวอย่าง',phone:'081-000-0000',regno:'ตัวอย่าง',president:'นางสมศรี ใจดี',bookkeeper:'นายสมชาย รักดี',startYear:Y,demo:true});
+  const P=(type,name,no)=>{const x={id:uid(),type,name,no:no||'',addr:'',idc:''};S.parties.push(x);return x.id};
+  const I=(kind,name,unit,price)=>{const x={id:uid(),kind,name,unit,cost:0,price:price||0};S.items.push(x);return x.id};
+  const m1=P('member','นางสมศรี ใจดี','M001'),m2=P('member','นายบุญมี แก้วมณี','M002'),m3=P('member','นางกัลยา ศรีสุข','M003');
+  const dShop=P('debtor','ร้านค้าชุมชนบ้านสวนใหม่'),cBank=P('creditor','ธ.ก.ส. (เงินกู้)'),cFarm=P('creditor','ลุงดำ (ขายกล้วย)');
+  const raw=I('material','กล้วยน้ำว้าดิบ','กก.'),prd=I('goods','กล้วยตาก ถุง 500 กรัม','ถุง',45);
+  const d=(m,dd)=>Y+'-'+pad(m)+'-'+pad(dd);
+  const add=(cat,acct,date,amount,x)=>{const dd=CD[cat],kind=dd.k==='open'||dd.k==='gen'?'gen':dd.k;S.tx.push(Object.assign({id:uid(),n:S.seq++,kind,cat,acct:(kind==='in'||kind==='out')?acct:null,date,amount,desc:''},x||{}))};
+  add('open_cash',0,d(1,1),15000);add('open_bank',0,d(1,1),20000);add('open_raw',0,d(1,1),3000,{itemId:raw,qty:200});add('open_goods',0,d(1,1),900,{itemId:prd,qty:30});
+  add('open_asset',0,d(1,1),12000,{desc:'เตาอบกล้วย',life:5,accum:2400});
+  [m1,m2,m3].forEach(m=>add('open_share',0,d(1,1),5000,{partyId:m}));
+  add('buy_raw','cash',d(2,5),4500,{desc:'ซื้อกล้วยดิบจากสวนลุงดำ',itemId:raw,qty:300});
+  add('stock_out',0,d(2,6),0,{itemId:raw,qty:480,desc:'เบิกกล้วยดิบไปผลิต'});
+  add('prod_exp','cash',d(2,6),800,{sub:'other',desc:'ค่าแก๊สอบกล้วย'});
+  add('prod_exp','cash',d(2,10),1200,{sub:'labor',desc:'ค่าแรงช่วยปอกกล้วย 4 คน'});
+  add('stock_in',0,d(2,18),12000,{itemId:prd,qty:350,desc:'กล้วยตากล็อตเดือนกุมภาพันธ์'});
+  add('sale','cash',d(2,20),6750,{itemId:prd,qty:150,desc:'ขายที่ตลาดนัด'});
+  add('sale','cash',d(3,3),5400,{itemId:prd,qty:120,desc:'ขายที่ตลาดนัด'});
+  add('credit_sale',0,d(3,15),3600,{partyId:dShop,itemId:prd,qty:80,desc:'ฝากขายร้านค้าชุมชน'});
+  add('loan_in','bank',d(4,2),30000,{partyId:cBank,ctype:'2200',desc:'กู้เงินทุนหมุนเวียน'});
+  add('dep','cash',d(4,5),10000,{desc:'นำฝากธนาคาร'});
+  add('collect_debtor','cash',d(4,10),2000,{partyId:dShop,desc:'ร้านค้าชำระบางส่วน'});
+  add('opex','bank',d(5,8),150,{desc:'ค่าธรรมเนียมธนาคาร'});
+  add('buy_raw','cash',d(5,12),6000,{itemId:raw,qty:400,desc:'ซื้อกล้วยดิบล็อตใหม่'});
+  add('prod_exp','cash',d(5,14),1800,{sub:'labor',desc:'ค่าแรงช่วยปอกและตาก'});
+  add('stock_out',0,d(5,20),0,{itemId:raw,qty:400,desc:'เบิกกล้วยดิบไปผลิต'});
+  add('stock_in',0,d(5,28),11000,{itemId:prd,qty:300,desc:'กล้วยตากล็อตเดือนพฤษภาคม'});
+  add('sale','cash',d(6,10),6750,{itemId:prd,qty:150,desc:'ขายงานกาชาดจังหวัด'});
+  add('share','cash',d(6,20),1000,{partyId:m2});
+  add('interest','bank',d(6,30),85,{desc:'ดอกเบี้ยเงินฝากธนาคาร'});
+  add('int_exp','cash',d(7,15),450,{partyId:cBank,desc:'ดอกเบี้ยเงินกู้'});
+  add('pay_creditor','bank',d(7,20),5000,{partyId:cBank,ctype:'2200',desc:'ชำระต้นเงินกู้'});
+  add('opex','cash',d(8,3),1500,{desc:'ค่าเช่าที่ขายของ'});
+  add('buy_asset','cash',d(8,15),4800,{desc:'เครื่องซีลถุง',life:4});
+  add('sale','cash',d(9,5),5400,{itemId:prd,qty:120,desc:'ขายที่ตลาดนัด'});
+  add('credit_buy_raw',0,d(9,18),3000,{partyId:cFarm,itemId:raw,qty:200,desc:'ซื้อกล้วยดิบเชื่อ'});
+  add('service','cash',d(9,25),600,{desc:'รับจ้างตากกล้วยให้เพื่อนบ้าน'});
+  S.closing[Y]={goods:stockValue('goods',yEn(Y)),material:stockValue('material',yEn(Y)),units:650,uname:'ถุง'};
+  commit();nav=[{s:'home',p:{}}];render();
+}
+/* ---------- ส่งออก ---------- */
+function aoaStmt(rows){return rows.map(r=>[r.t,r.a==null?'':r.a,r.b==null?'':r.b])}
+async function saveFile(name,data){
+  if(dlCap){
+    try{await dlCap.save({filename:name,data});toast('บันทึกไฟล์แล้ว');return true}
+    catch(e){if(e&&e.code==='declined')return false}
+  }
+  try{
+    const type=name.endsWith('.json')?'application/json':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const blob=new Blob([data],{type});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=name;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+    toast('ดาวน์โหลดไฟล์แล้ว ดูในโฟลเดอร์ดาวน์โหลดของเครื่อง');
+    return true;
+  }catch(e){toast('บันทึกไฟล์ไม่สำเร็จ');return false}
+}
+/* ---------- ส่งออก Excel พร้อมพิมพ์ (ExcelJS: A4 หัวกระดาษ ท้ายกระดาษ ช่วงเวลาที่เลือก) ---------- */
+const XSHEETS=[['cash','สมุดเงินสด'],['bank','สมุดเงินฝากธนาคาร'],['gj','สมุดรายวันทั่วไป'],['gl','บัญชีแยกประเภททั่วไป'],['tb','งบทดลอง'],['pc','รายงานต้นทุนการผลิต'],['is','สมุดบันทึกต้นทุนกำไร'],['bsh','งบแสดงฐานะการเงิน'],['mem','ทะเบียนสมาชิกและหุ้น'],['deb','บัญชีย่อยลูกหนี้'],['cre','บัญชีย่อยเจ้าหนี้'],['raw','ทะเบียนคุมวัตถุดิบ'],['gd','ทะเบียนคุมสินค้า'],['ast','ทะเบียนคุมสินทรัพย์ถาวร']];
+function loadXL(){
+  return new Promise((res,rej)=>{
+    if(window.ExcelJS)return res(window.ExcelJS);
+    const urls=['https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js','https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js'];
+    let i=0;const next=()=>{
+      if(i>=urls.length)return rej(new Error('load'));
+      const s=document.createElement('script');s.src=urls[i++];
+      s.onload=()=>window.ExcelJS?res(window.ExcelJS):next();s.onerror=next;document.head.appendChild(s);
+    };next();
+  });
+}
+const FN='Tahoma',MONEY='#,##0.00;[Red]-#,##0.00',THIN={style:'thin',color:{argb:'FF9AA79F'}},BOX={top:THIN,left:THIN,bottom:THIN,right:THIN};
+const hfEsc=s=>String(s||'').replace(/&/g,'&&');
+const FILL=a=>({type:'pattern',pattern:'solid',fgColor:{argb:a}});
+function xlBook(wb,name,title,period,cols,land,hdrRow){
+  const org=S.org.name||'วิสาหกิจชุมชน';
+  const ws=wb.addWorksheet(name.slice(0,31),{
+    views:[Object.assign({showGridLines:false},hdrRow?{state:'frozen',ySplit:hdrRow}:{})],
+    pageSetup:Object.assign({paperSize:9,orientation:land?'landscape':'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0,horizontalCentered:true,margins:{left:.4,right:.4,top:.95,bottom:.85,header:.4,footer:.4}},hdrRow?{printTitlesRow:hdrRow+':'+hdrRow}:{}),
+    headerFooter:{oddHeader:'&C&"Tahoma,Bold"&13 '+hfEsc(org)+'\n&C&"Tahoma,Bold"&11 '+hfEsc(title),oddFooter:'&L&"Tahoma,Regular"&9 พิมพ์เมื่อ &D&C&"Tahoma,Regular"&9 '+hfEsc(period)+'&R&"Tahoma,Regular"&9 หน้า &P / &N'}
+  });
+  ws.columns=cols.map(c=>({width:c.w}));
+  const n=cols.length;
+  [[org,14,true],[title,13,true],[period,11,false]].forEach(([tx,sz,b],i)=>{
+    ws.mergeCells(i+1,1,i+1,n);const c=ws.getCell(i+1,1);c.value=tx;c.font={name:FN,size:sz,bold:b};c.alignment={horizontal:'center',vertical:'middle'};
+  });
+  return ws;
+}
+function xlHead(ws,r,cols){
+  const row=ws.getRow(r);
+  cols.forEach((c,i)=>{const x=row.getCell(i+1);x.value=c.t;x.font={name:FN,size:10,bold:true};x.fill=FILL('FFDCEBE4');x.alignment={horizontal:'center',vertical:'middle',wrapText:true};x.border=BOX});
+  row.height=32;return r+1;
+}
+function xlRow(ws,r,cols,vals,o){
+  o=o||{};const row=ws.getRow(r);
+  cols.forEach((c,i)=>{
+    const v=vals[i],x=row.getCell(i+1);
+    if(v!==null&&v!==undefined&&v!=='')x.value=v;
+    x.font={name:FN,size:10,bold:!!o.b};x.border=BOX;if(o.fill)x.fill=FILL(o.fill);
+    if(typeof v==='number'){x.numFmt=c.k==='q'?(Number.isInteger(v)?'#,##0':'#,##0.###'):MONEY;x.alignment={horizontal:'right',vertical:'top'}}
+    else x.alignment={horizontal:c.k==='d'?'center':'left',vertical:'top',wrapText:true};
+  });
+  return r+1;
+}
+function xlTitle(ws,r,n,text){
+  ws.mergeCells(r,1,r,n);const x=ws.getCell(r,1);x.value=text;x.font={name:FN,size:10.5,bold:true};x.fill=FILL('FFE8EEE6');x.border=BOX;
+  x.alignment={horizontal:'left',vertical:'middle'};return r+1;
+}
+function xlTable(ws,r,cols,rows,foot){
+  r=xlHead(ws,r,cols);
+  for(const rw of rows){
+    if(rw&&rw.title){r=xlTitle(ws,r,cols.length,rw.title);continue}
+    const o=Array.isArray(rw)?{c:rw}:rw;r=xlRow(ws,r,cols,o.c,{b:o.b,fill:o.fill});
+  }
+  if(foot)r=xlRow(ws,r,cols,foot,{b:true,fill:'FFE8EEE6'});
+  return r;
+}
+function xlStmt(ws,r,rows){
+  for(const q of rows){
+    const k=q.k||'',row=ws.getRow(r),bold=k==='head'||k==='tot'||k==='grand';
+    const lab=row.getCell(1);lab.value=q.t;lab.font={name:FN,size:10.5,bold};lab.alignment={horizontal:'left',vertical:'top',wrapText:true,indent:k==='sub'?2:0};
+    [[2,q.a],[3,q.b]].forEach(([ci,v])=>{const c=row.getCell(ci);if(typeof v==='number'){c.value=v;c.numFmt=MONEY}c.alignment={horizontal:'right',vertical:'top'};c.font={name:FN,size:10.5,bold}});
+    for(let ci=1;ci<=3;ci++){
+      const c=row.getCell(ci);
+      if(k==='head')c.fill=FILL('FFE8EEE6');else if(k==='grand')c.fill=FILL('FFDCEBE4');
+      c.border=k==='tot'?{top:{style:'thin'}}:k==='grand'?{top:{style:'thin'},bottom:{style:'double'}}:{bottom:{style:'hair',color:{argb:'FFB8C2BB'}}};
+    }
+    r++;
+  }
+  return r;
+}
+function xlNote(ws,r,n,text){
+  ws.mergeCells(r,1,r,n);const x=ws.getCell(r,1);x.value=text;x.font={name:FN,size:9,italic:true};x.alignment={wrapText:true,vertical:'top'};ws.getRow(r).height=36;return r+1;
+}
+function xlSign(ws,r,n){
+  r+=2;const mid=Math.max(1,Math.floor(n/2));
+  const put=(c1,c2,a,b)=>{if(c2>c1){ws.mergeCells(r,c1,r,c2);ws.mergeCells(r+1,c1,r+1,c2)}[[r,a],[r+1,b]].forEach(([rr,tx])=>{const x=ws.getCell(rr,c1);x.value=tx;x.font={name:FN,size:10};x.alignment={horizontal:'center'}})};
+  put(1,mid,'ลงชื่อ ........................................ ผู้จัดทำบัญชี','( '+(S.org.bookkeeper||'........................................')+' )');
+  put(mid+1,n,'ลงชื่อ ........................................ ประธานกลุ่ม','( '+(S.org.president||'........................................')+' )');
+  return r+3;
+}
+function buildSheets(wb,f,t,keys){
+  const y=+t.slice(0,4),per='ตั้งแต่ '+dfull(f)+' ถึง '+dfull(t),asof='ณ วันที่ '+dfull(t),partial=t!==yEn(y);
+  const NOTE='หมายเหตุ: สินค้า/วัตถุดิบคงเหลือปลายงวดและค่าเสื่อมราคาบันทึกเมื่อปิดงวดสิ้นปี ช่วงเวลาที่เลือกไม่ถึงสิ้นปี ตัวเลขจึงเป็นเฉพาะรายการที่บันทึกในช่วงนี้';
+  const stmtSheet=(name,title,period,rows)=>{
+    const ws=xlBook(wb,name,title,period,[{w:56},{w:18},{w:18}],false,0);
+    let r=xlStmt(ws,5,rows);if(partial)r=xlNote(ws,r+1,3,NOTE);xlSign(ws,r,3);
+  };
+  const B={
+    cash:()=>bk('cash'),bank:()=>bk('bank'),
+    gj(){
+      const cols=[{t:'วันที่',w:11,k:'d'},{t:'รายการ',w:54},{t:'เดบิต',w:16},{t:'เครดิต',w:16}],rows=[];
+      for(const e of E()){if((e.src!=='gen'&&e.src!=='adj')||e.date<f||e.date>t)continue;
+        rows.push({c:[dshort(e.date),e.desc,null,null],b:true});
+        for(const l of e.lines)rows.push(['',(l.cr?'      ':'')+ACC[l.acc].n+(l.party?' ('+pname(l.party)+')':''),l.dr||null,l.cr||null]);}
+      const ws=xlBook(wb,'สมุดรายวันทั่วไป','สมุดรายวันทั่วไป',per,cols,false,5);xlTable(ws,5,cols,rows);
+    },
+    gl(){
+      const cols=[{t:'วันที่',w:11,k:'d'},{t:'รายการ',w:42},{t:'เดบิต',w:15},{t:'เครดิต',w:15},{t:'คงเหลือ ด้านเดบิต',w:15},{t:'คงเหลือ ด้านเครดิต',w:15}],rows=[];
+      for(const ac of ACCS){
+        const D=ledgerR(ac,f,t);if(!D.rows.length&&!D.cd&&!D.cc)continue;
+        let bal=D.cd-D.cc;const bc=()=>[bal>0?r2(bal):null,bal<0?r2(-bal):null];
+        rows.push({title:ac+' '+ACC[ac].n});rows.push({c:['','ยอดยกมา',null,null,...bc()],b:true});
+        for(const r of D.rows){bal=r2(bal+r.dr-r.cr);rows.push([dshort(r.date),r.desc,r.dr||null,r.cr||null,...bc()])}
+        rows.push({c:['','รวมช่วงนี้',r2(D.rows.reduce((s,r)=>s+r.dr,0)),r2(D.rows.reduce((s,r)=>s+r.cr,0)),null,null],b:true,fill:'FFF3F6F1'});
+      }
+      const ws=xlBook(wb,'บัญชีแยกประเภท','บัญชีแยกประเภททั่วไป',per,cols,true,5);xlTable(ws,5,cols,rows);
+    },
+    tb(){
+      const T=trialAt(t),cols=[{t:'เลขที่',w:9},{t:'ชื่อบัญชี',w:44},{t:'เดบิต',w:17},{t:'เครดิต',w:17}];
+      const ws=xlBook(wb,'งบทดลอง','งบทดลอง',asof,cols,false,5);
+      const r=xlTable(ws,5,cols,T.rows.map(q=>[q.a,q.n,q.dr||null,q.cr||null]),['','รวม',T.td,T.tc]);xlSign(ws,r,4);
+    },
+    pc:()=>stmtSheet('ต้นทุนการผลิต','รายงานต้นทุนการผลิต',per,prodCostData(f,t).rows),
+    is:()=>stmtSheet('ต้นทุนกำไร','สมุดบันทึกต้นทุนกำไร',per,incomeRows(incomeStmtR(f,t))),
+    bsh:()=>stmtSheet('งบแสดงฐานะการเงิน','งบแสดงฐานะการเงิน',asof,balanceRows(balanceSheetAt(t))),
+    mem:()=>pty('member','ทะเบียนสมาชิกและหุ้น'),deb:()=>pty('debtor','บัญชีย่อยลูกหนี้'),cre:()=>pty('creditor','บัญชีย่อยเจ้าหนี้'),
+    raw:()=>stk('material','ทะเบียนคุมวัตถุดิบ'),gd:()=>stk('goods','ทะเบียนคุมสินค้า'),
+    ast(){
+      const {act,gone}=assetsAt(y),cols=[{t:'ชื่อสินทรัพย์',w:28},{t:'วันที่ได้มา',w:11,k:'d'},{t:'จำนวน (ชิ้น)',w:9,k:'q'},{t:'ราคาต่อชิ้น',w:13},{t:'อายุ (ปี)',w:8,k:'q'},{t:'ราคาทุนรวม',w:14},{t:'มูลค่าซาก',w:12},{t:'ค่าเสื่อมราคาปีนี้',w:14},{t:'ค่าเสื่อมราคาสะสม',w:14},{t:'ราคาสุทธิ',w:14}];
+      const ws=xlBook(wb,'สินทรัพย์ถาวร','ทะเบียนคุมสินทรัพย์ถาวร','ณ สิ้นปี พ.ศ. '+(y+543),cols,true,5);
+      const sm=g=>r2(act.reduce((s,r)=>s+g(r),0));
+      let r=xlTable(ws,5,cols,act.map(q=>[q.a.name,dshort(q.a.acq),q.a.pcs,q.unit,q.a.life,q.a.cost,q.a.salvage,q.dep,q.acc,q.net]),['รวม','',act.reduce((s,q)=>s+q.a.pcs,0),null,null,sm(q=>q.a.cost),sm(q=>q.a.salvage),sm(q=>q.dep),sm(q=>q.acc),sm(q=>q.net)]);
+      if(gone.length){
+        const c2=[{t:'จำหน่ายในปีนี้',w:28},{t:'วันที่จำหน่าย',w:11,k:'d'},{t:'จำนวน (ชิ้น)',w:9,k:'q'},{t:'ราคาทุนรวม',w:13},{t:'ค่าเสื่อมสะสม',w:8},{t:'มูลค่าตามบัญชี',w:14},{t:'เงินที่ได้รับ',w:12},{t:'กำไร (ขาดทุน)',w:14}];
+        r=xlTable(ws,r+2,c2,gone.map(q=>{const x=S.tx.find(z=>z.id===q.a.dispId),c=disposeCalcFor(q.a,x.date,x.amount);return[q.a.name,dshort(x.date),q.a.pcs,q.a.cost,r2(c.prior+c.fin),c.bv,r2(+x.amount),r2(c.gain-c.loss)]}));
+      }
+    }
+  };
+  function bk(ac){
+    const D=bookDataR(ac,f,t),cols=[{t:'วันที่',w:11,k:'d'},{t:'รายการ',w:46},{t:'รับ',w:15},{t:'จ่าย',w:15},{t:'คงเหลือ',w:16}],nm=ac==='cash'?'สมุดเงินสด':'สมุดเงินฝากธนาคาร';
+    let bal=D.carry;const rows=[{c:['','ยอดยกมา',null,null,bal],b:true}];
+    for(const r of[...D.recv.map(r=>({...r,s:1})),...D.pay.map(r=>({...r,s:-1}))].sort(cmp3)){bal=r2(bal+r.s*r.amt);rows.push([dshort(r.date),txDesc(r.t),r.s>0?r.amt:null,r.s<0?r.amt:null,bal])}
+    const ws=xlBook(wb,nm,nm,per,cols,false,5);xlTable(ws,5,cols,rows,['รวม','',D.tr,D.tp,D.end]);
+  }
+  function pty(ty,nm){
+    const T=PT[ty],L=S.parties.filter(x=>x.type===ty);if(!L.length)return;const cr=ty==='creditor';
+    const cols=[{t:'วันที่',w:11,k:'d'},{t:'รายการ',w:40},{t:T.inc,w:15},{t:T.dec,w:15},...(cr?[{t:'ดอกเบี้ย',w:13}]:[]),{t:T.bal,w:16}],rows=[];let tot=0;
+    for(const x of L){
+      const c=partyCard(x),before=c.rows.filter(r=>r.date<f),open=before.length?before[before.length-1].bal:0,inR=c.rows.filter(r=>r.date>=f&&r.date<=t);
+      rows.push({title:x.name+(x.no?' · ทะเบียน '+x.no:'')});rows.push({c:['','ยอดยกมา',null,null,...(cr?[null]:[]),open],b:true});
+      inR.forEach(r=>rows.push([dshort(r.date),r.desc,r.inc||null,r.dec||null,...(cr?[r.int||null]:[]),r.bal]));
+      const end=inR.length?inR[inR.length-1].bal:open;tot+=end;rows.push({c:['','คงเหลือสิ้นงวด',null,null,...(cr?[null]:[]),end],b:true,fill:'FFF3F6F1'});
+    }
+    const ws=xlBook(wb,nm,nm,per,cols,false,5);xlTable(ws,5,cols,rows,['','รวมคงเหลือทั้งหมด',null,null,...(cr?[null]:[]),r2(tot)]);
+  }
+  function stk(kd,nm){
+    const L=S.items.filter(i=>i.kind===kd);if(!L.length)return;
+    const cols=[{t:'วันที่',w:11,k:'d'},{t:'รายการ',w:36},{t:'รับ ปริมาณ',w:11,k:'q'},{t:'รับ ราคา/หน่วย',w:12},{t:'รับ จำนวนเงิน',w:14},{t:'จ่าย ปริมาณ',w:11,k:'q'},{t:'จ่าย ราคา/หน่วย',w:12},{t:'จ่าย จำนวนเงิน',w:14},{t:'คงเหลือ ปริมาณ',w:12,k:'q'},{t:'คงเหลือ ราคา/หน่วย',w:12},{t:'คงเหลือ จำนวนเงิน',w:14}],rows=[];
+    for(const it of L){
+      const c=stockCard(it.id,t),before=c.rows.filter(r=>r.date<f),inR=c.rows.filter(r=>r.date>=f);
+      rows.push({title:it.name+' (หน่วยนับ: '+it.unit+')'});
+      if(before.length){const q=before[before.length-1];rows.push({c:['','ยอดยกมา',null,null,null,null,null,null,r2(q.bq*1000)/1000,r2(q.bp),r2(q.ba)],b:true})}
+      inR.forEach(r=>rows.push([dshort(r.date),r.desc,r.iq??null,r.ip!=null?r2(r.ip):null,r.ia??null,r.oq??null,r.op!=null?r2(r.op):null,r.oa??null,r2(r.bq*1000)/1000,r2(r.bp),r2(r.ba)]));
+    }
+    const ws=xlBook(wb,nm,nm,per,cols,true,5);xlTable(ws,5,cols,rows);
+  }
+  for(const k of keys)B[k]();
+}
+async function exportExcel(f,t,keys){
+  const X=await loadXL(),wb=new X.Workbook();
+  wb.creator=S.org.name||'สมุดบัญชีวิสาหกิจชุมชน';wb.created=new Date();
+  buildSheets(wb,f,t,keys);
+  const buf=await wb.xlsx.writeBuffer(),y=+t.slice(0,4);
+  const be=d=>(+d.slice(0,4)+543)+d.slice(4);
+  const tag=f===ySt(y)&&t===yEn(y)?String(y+543):be(f)+'_ถึง_'+be(t);
+  const nm=(S.org.name||'วิสาหกิจชุมชน').replace(/\(.*?\)/g,'').trim(),short=nm.length>30?(nm.slice(0,30).replace(/\s+\S*$/,'')||nm.slice(0,30)):nm;
+  return saveFile('บัญชี-'+short+'-'+tag+'.xlsx',buf);
+}
+SCR.export=()=>{
+  const y=S.ui.year,f=S.ui.xf||ySt(y),t=S.ui.xt||yEn(y),xs=S.ui.xs||{};
+  const Q=[['ทั้งปี',1,12],['ไตรมาส 1 (ม.ค.–มี.ค.)',1,3],['ไตรมาส 2 (เม.ย.–มิ.ย.)',4,6],['ไตรมาส 3 (ก.ค.–ก.ย.)',7,9],['ไตรมาส 4 (ต.ค.–ธ.ค.)',10,12]];
+  return{title:'ส่งออก Excel พร้อมพิมพ์',sub:'เลือกช่วงเวลาและรายงาน',year:true,html:`
+  <p class="sub">ไฟล์ที่ได้ตั้งหน้ากระดาษ A4 ไว้แล้ว มีชื่อกลุ่มและชื่อรายงานเป็นหัวกระดาษ เลขหน้าท้ายกระดาษ และหัวตารางซ้ำทุกหน้า เปิดใน Excel แล้วสั่งพิมพ์ได้เลย</p>
+  <div class="card sect"><h3>ช่วงเวลา (ปีตามที่เลือกด้านบน)</h3>
+   <div class="tabs">${Q.map(([l,a,b])=>`<button class="tab" data-a="xrange" data-f="${mSt(y,a)}" data-t="${mEn(y,b)}" aria-pressed="${f===mSt(y,a)&&t===mEn(y,b)}">${esc(l)}</button>`).join('')}</div>
+   <div class="field"><label for="x_mon">หรือเลือกทีละเดือน</label><select id="x_mon"><option value="">— เลือกเดือน —</option>${MF.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select></div>
+   <div class="form two"><div class="field"><label for="x_from">ตั้งแต่วันที่</label><input type="date" id="x_from" value="${esc(f)}"></div><div class="field"><label for="x_to">ถึงวันที่</label><input type="date" id="x_to" value="${esc(t)}"></div></div></div>
+  <div class="card sect"><h3>รายงานที่ต้องการ</h3>
+   <div class="row"><button class="btn ghost sm" data-a="xall" data-v="1">เลือกทั้งหมด</button><button class="btn ghost sm" data-a="xall" data-v="0">ไม่เลือกเลย</button></div>
+   <div class="grid">${XSHEETS.map(([k,l])=>`<label class="row" style="gap:10px;min-height:40px;flex-wrap:nowrap"><input type="checkbox" class="xs" data-k="${k}" ${xs[k]===false?'':'checked'} style="width:22px;height:22px;flex:none"><span>${esc(l)}</span></label>`).join('')}</div></div>
+  <p class="hint">งบทดลองและงบแสดงฐานะการเงินแสดง ณ วันที่สิ้นสุดของช่วง · ถ้าช่วงที่เลือกไม่ถึงสิ้นปี สินค้า/วัตถุดิบคงเหลือและค่าเสื่อมราคาจะยังไม่นับ (บันทึกตอนปิดงวดสิ้นปี)</p>`,
+  bar:`<button class="btn block" data-a="exportX">สร้างไฟล์ Excel</button>`,
+  after:()=>{loadXL().catch(()=>{})}};
+};
+async function exportX(el){
+  const f=($('#x_from')||{}).value||S.ui.xf,t=($('#x_to')||{}).value||S.ui.xt;
+  if(!f||!t||f>t){toast('เลือกช่วงวันที่ให้ถูกต้อง');return}
+  const keys=XSHEETS.map(s=>s[0]).filter(k=>(S.ui.xs||{})[k]!==false);
+  if(!keys.length){toast('เลือกอย่างน้อย 1 รายงาน');return}
+  const old=el?el.textContent:'';if(el){el.disabled=true;el.textContent='กำลังสร้างไฟล์...'}
+  try{await exportExcel(f,t,keys)}
+  catch(e){toast(e&&e.message==='load'?'ยังโหลดตัวสร้างไฟล์ Excel ไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่':'สร้างไฟล์ไม่สำเร็จ')}
+  finally{if(el){el.disabled=false;el.textContent=old}}
+}
+async function backup(){
+  const json=JSON.stringify(S);
+  const ok=await saveFile('สำรองข้อมูลบัญชี-'+todayISO()+'.json',json);
+  if(!ok){const b=$('#bkText');if(b)b.innerHTML=`<div class="field"><label for="bkArea">คัดลอกข้อความนี้เก็บไว้ (เก็บเป็นไฟล์ .json ได้)</label><textarea id="bkArea" rows="4" readonly>${esc(json)}</textarea></div>`}
+}
+
+/* ---------- การกระทำ ---------- */
+const ACT={
+  go(el,p){nav.push({s:el.dataset.s||p.s,p:p.p||(el.dataset.s?p:{})});render()},
+  back,home:toHome,
+  again(el,p){nav.pop();nav.push({s:'form',p:{cat:p.cat,acct:p.acct}});render()},
+  saveOrg(){
+    const n=val('o_name');if(!n){$('#o_err').textContent='กรุณาพิมพ์ชื่อวิสาหกิจชุมชน';$('#o_name').focus();return}
+    const needsAccess=!(S.auth&&S.auth.password),pw=val('o_pass'),pw2=val('o_pass2');
+    if(needsAccess){if(pw.length<4){$('#o_err').textContent='กรุณาตั้งรหัสผ่านอย่างน้อย 4 ตัวอักษร';$('#o_pass').focus();return}if(pw!==pw2){$('#o_err').textContent='รหัสผ่านทั้งสองช่องไม่ตรงกัน';$('#o_pass2').focus();return}}
+    const yb=parseInt(val('o_year'));
+    Object.assign(S.org,{name:n,kind:val('o_kind'),regno:val('o_reg'),address:val('o_addr'),phone:val('o_tel'),president:val('o_pres'),bookkeeper:val('o_book'),startYear:(yb>2400?yb-543:yb)||thisYear()});
+    const first=!S.setup||needsAccess;S.setup=true;if(first){S.auth=S.auth||{};S.auth.password=pw;unlocked=true;S.ui.year=thisYear();commit();nav=[{s:'shareSetup',p:{}}];toast('บันทึกข้อมูลแล้ว เพิ่มรายชื่อหุ้นส่วนได้หรือกดข้าม');render()}else{commit();toast('บันทึกข้อมูลแล้ว');back()}
+  },
+  loginIn(){const pw=val('login_pass');if(pw&&S.auth&&pw===S.auth.password){unlocked=true;nav=[{s:'home',p:{}}];render()}else{const e=$('#login_err');if(e)e.textContent='รหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง';const i=$('#login_pass');if(i){i.value='';i.focus()}}},
+  addShareRow(){const box=$('#shareRows');if(box){const i=box.querySelectorAll('.share-row').length;box.insertAdjacentHTML('beforeend',shareRowHTML(i));}},
+  removeShareRow(el){const row=el.closest('.share-row');if(row)row.remove();},
+  saveShareSetup(){const rows=[...document.querySelectorAll('.share-row')];for(const row of rows){const name=row.querySelector('.sh_name').value.trim();if(!name)continue;const no=row.querySelector('.sh_no').value.trim(),amount=parseFloat(row.querySelector('.sh_amount').value)||0,phone=row.querySelector('.sh_phone').value.trim(),addr=row.querySelector('.sh_addr').value.trim(),idc=row.querySelector('.sh_idc').value.trim();const existing=S.parties.find(x=>x.type==='member'&&((no&&x.no===no)||(!no&&x.name===name)));if(existing)Object.assign(existing,{name,no,capitalShare:amount,phone,addr,idc});else S.parties.push({id:uid(),type:'member',name,no,capitalShare:amount,phone,addr,idc});}S.ui.shareSetupDone=true;commit();nav=[{s:'home',p:{}}];unlocked=true;render();toast('บันทึกรายชื่อหุ้นส่วนแล้ว');},
+  skipShareSetup(){S.ui.shareSetupDone=true;commit();nav=[{s:'home',p:{}}];unlocked=true;render();toast('ข้ามการลงชื่อหุ้นส่วนแล้ว');},
+  loadDemo(){loadDemo()},
+  clearDemo(el){if(!el.dataset.c){el.dataset.c=1;el.textContent='แตะอีกครั้งเพื่อยืนยันการลบตัวอย่าง';return}S=blank();commit();nav=[{s:'setup',p:{}}];render()},
+  resetAll(el){if(!el.dataset.c){el.dataset.c=1;el.textContent='แตะอีกครั้งเพื่อยืนยันลบทั้งหมด';return}S=blank();commit();nav=[{s:'setup',p:{}}];render();toast('ลบข้อมูลทั้งหมดแล้ว')},
+  saveTx(el,p){saveTx(p)},
+  delTx(el){const dt=S.tx.find(x=>x.id===el.dataset.id);if(dt&&(dt.cat==='buy_asset'||dt.cat==='open_asset')&&S.tx.some(x=>x.cat==='dispose_asset'&&x.assetId===dt.id)){$('#f_err').textContent='ลบไม่ได้ เพราะสินทรัพย์นี้มีรายการจำหน่ายอยู่ ลบรายการจำหน่ายก่อน';return}if(!el.dataset.c){el.dataset.c=1;el.textContent='แตะอีกครั้งเพื่อยืนยันการลบ';return}S.tx=S.tx.filter(t=>t.id!==el.dataset.id);commit();toast('ลบรายการแล้ว');back()},
+  saveClosing(){const g=val('c_goods'),m=val('c_mat'),u=num('c_units');S.closing[S.ui.year]={goods:g===''?'':+g,material:m===''?'':+m,units:isNaN(u)?'':u,uname:val('c_uname')};commit();toast('บันทึกการปิดงวดแล้ว');back()},
+  fill(el,p,ev){ev.preventDefault();const i=$('#'+el.dataset.t);if(i){i.value=el.dataset.v;i.dispatchEvent(new Event('input',{bubbles:true}))}},
+  addLine(){const r=keepRows();r.push({itemId:'',qs:'',ps:'',as:''});drawLines(r)},
+  delLine(el){const r=keepRows();r.splice(+el.dataset.i,1);drawLines(r.length?r:[{itemId:'',qs:'',ps:'',as:''}])},
+  tab(el,p){const k=el.dataset.k||p.k,v=el.dataset.v??p.v;S.ui[k]=v;persist();if(p.open){nav.push({s:p.open,p:{}})}render()},
+  selParty(el,p){S.ui.pid=S.ui.pid||{};S.ui.pid[p.ty]=p.id;persist();render()},
+  saveParty(el){const x=S.parties.find(q=>q.id===el.dataset.id),n=val('e_name');if(!n){$('#f_err').textContent='กรุณาพิมพ์ชื่อ';return}x.name=n;if($('#e_no'))x.no=val('e_no');x.idc=val('e_idc');x.addr=val('e_addr');commit();toast('บันทึกแล้ว');back()},
+  delParty(el){const id=el.dataset.id;if(S.tx.some(t=>t.partyId===id)){$('#f_err').textContent='ลบไม่ได้ เพราะมีรายการที่ใช้ชื่อนี้อยู่ ลบรายการเหล่านั้นก่อน';return}if(!el.dataset.c){el.dataset.c=1;el.textContent='แตะอีกครั้งเพื่อยืนยัน';return}S.parties=S.parties.filter(x=>x.id!==id);commit();back()},
+  saveItem(el){const x=iget(el.dataset.id),n=val('e_name');if(!n){$('#f_err').textContent='กรุณาพิมพ์ชื่อ';return}x.name=n;x.unit=val('e_unit')||'หน่วย';x.price=num('e_price')||0;commit();toast('บันทึกแล้ว');back()},
+  delItem(el){const id=el.dataset.id;if(S.tx.some(t=>t.itemId===id)){$('#f_err').textContent='ลบไม่ได้ เพราะมีรายการที่ใช้สินค้านี้อยู่';return}if(!el.dataset.c){el.dataset.c=1;el.textContent='แตะอีกครั้งเพื่อยืนยัน';return}S.items=S.items.filter(x=>x.id!==id);commit();back()},
+  backup,exportX,printPage(){window.print()},
+  xrange(el){S.ui.xf=el.dataset.f;S.ui.xt=el.dataset.t;persist();render()},
+  xall(el){const v=el.dataset.v==='1';S.ui.xs={};XSHEETS.forEach(s=>{S.ui.xs[s[0]]=v});persist();render()},
+  doRestore(){S=Object.assign(blank(),pendingRestore);migrate();pendingRestore=null;commit();nav=[{s:'home',p:{}}];render();toast('นำเข้าข้อมูลแล้ว')},
+  cancelRestore(){pendingRestore=null;render()}
+};
+document.addEventListener('click',ev=>{
+  const el=ev.target.closest('[data-a]');if(!el)return;
+  const fn=ACT[el.dataset.a];if(!fn)return;
+  let p={};try{if(el.dataset.p)p=JSON.parse(el.dataset.p)}catch(e){}
+  fn(el,p,ev);
+});
+document.addEventListener('change',ev=>{
+  const id=ev.target.id;
+  if(id==='yearSel'){S.ui.year=+ev.target.value;delete S.ui.xf;delete S.ui.xt;persist();render()}
+  else if(id==='x_from'||id==='x_to'){S.ui[id==='x_from'?'xf':'xt']=ev.target.value;persist();render()}
+  else if(id==='x_mon'){const m=+ev.target.value;if(m){S.ui.xf=mSt(S.ui.year,m);S.ui.xt=mEn(S.ui.year,m);persist();render()}}
+  else if(ev.target.classList&&ev.target.classList.contains('xs')){S.ui.xs=S.ui.xs||{};S.ui.xs[ev.target.dataset.k]=ev.target.checked;persist()}
+  else if(id==='monSel'){S.ui.m=+ev.target.value;persist();render()}
+  else if(id==='accSel'){S.ui.acc=ev.target.value;persist();render()}
+  else if(id==='itemSel'){const c=nav[nav.length-1];S.ui.sid=S.ui.sid||{};S.ui.sid[c.p.kind]=ev.target.value;persist();render()}
+});
+(async()=>{
+  load();
+  try{const c=window.claude;if(c&&c.use)dlCap=await c.use('downloads')}catch(e){dlCap=null}
+})();
+load();
+nav=[{s:S.setup?(S.auth&&S.auth.password?'login':(S.org.demo?'home':'setup')):'setup',p:{}}];
+render();
+</script>
+
+</body></html>
